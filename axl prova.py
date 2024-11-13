@@ -1,3 +1,4 @@
+
 import axelrod as axl
 from icecream import ic
 import pprint
@@ -46,7 +47,6 @@ plt.savefig()
 
 summary = results.summarise()
 #pprint.pprint(summary)
-
 
 
 results.write_summary('summary.csv')
