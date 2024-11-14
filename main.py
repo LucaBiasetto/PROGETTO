@@ -3,11 +3,13 @@ import streamlit as st
 import axelrod as axl
 from icecream import ic
 
-def format_function(list):
-    fixed_list=list
-    return fixed_list
+def format_function(element):
+    fixed_element=repr(element)
+    fixed_element
+    return fixed_element
 
-players=st.multiselect("scegli strategie che parteciperann al torneo",axl.basic_strategies,placeholder="scegli tre o più alternative: ")
+players=st.multiselect("scegli strategie che parteciperann al torneo",axl.basic_strategies,placeholder="scegli tre o più alternative: ",
+                       format_func=lambda x: str(x).strip("<'>").split('.')[-1])
 players=[p()for p in players]
 #trovare lista di strategie che mi interessa 
 st.write(type(players[0]))
