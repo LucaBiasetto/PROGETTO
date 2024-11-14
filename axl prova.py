@@ -17,7 +17,7 @@ ic(match.cooperation())  # The count of cooperations
 ic(match.normalised_cooperation())  # The count of cooperations per turn
 
 """
-
+'''
 players2=[axl.Alternator(),axl.TitForTat(),axl.RandomTitForTat(),axl.Random(),axl.Cooperator(),axl.AdaptiveTitForTat()]
 tournament=axl.Tournament(players=players2,noise=0.1,prob_end=0.15,turns=20)
 results=tournament.play()
@@ -64,6 +64,14 @@ ic(results.progress_bar)
 ic(results.wins)                           
 
 """
+'''
+players33 = [s() for s in axl.basic_strategies]
+tournament = axl.Tournament(players33, turns=4, repetitions=2)
+results = tournament.play(filename="basic_tournament.csv")
+
+interactions = axl.interaction_utils.read_interactions_from_file("basic_tournament.csv")
+interactions[(0, 1)]
+#This should allow for easy manipulation of data outside of the capabilities within the library.
 
 
 #continuo moran process
