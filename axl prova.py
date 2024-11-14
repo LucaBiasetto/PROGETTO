@@ -28,6 +28,7 @@ plot = axl.Plot(results)
 p = plot.boxplot()
 p2 = plot.winplot()
 p3 = plot.payoff()
+
 #The axelrod.Plot class has a method: save_all_plots that will save all the above plots to file.
 axl.Plot.save_all_plots(self=plot)
 p.show()

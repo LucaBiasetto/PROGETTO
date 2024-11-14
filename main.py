@@ -4,15 +4,18 @@ import axelrod as axl
 from icecream import ic
 
 def format_function(list):
-    print(list)
+    fixed_list=list
+    return fixed_list
 
 players=st.multiselect("scegli strategie che parteciperann al torneo",axl.basic_strategies,placeholder="scegli tre o più alternative: ")#trovare lista di strategie che mi interessa 
 players2=st.multiselect("scegli strategie che parteciperann al torneo",axl.basic_strategies,placeholder="scegli due alternative: ",max_selections=2)#trovare lista di strategie che mi interessa
 noise=st.slider("scegli il rumore : ", min_value=0.0,max_value=1.0)
 prob_end=st.slider("scegli la probabilità che il singolo match finisca ogni turno: ", min_value=0.0,max_value=1.0)
 turns=st.slider("scegli il numero di turni: ", min_value=0,max_value=1000)
+
+
 #---------------Match--------------------
-#match=axl.Match(players=players,turns=turns,noise=noise)
+#match=axl.Match(players=players2,turns=turns,noise=noise)
 #ic(match.play())
 #ic((match.sparklines(c_symbol='🤝 ', d_symbol='❌ ')))
 #ic(match.scores())
@@ -28,6 +31,10 @@ turns=st.slider("scegli il numero di turni: ", min_value=0,max_value=1000)
 #results=tournament.play()
 #summary = results.summarise()
 #ic(summary)
+
+
+
+# domanda alias per visualizzazione(metodo format function), come gestire grafici, problema tournament.play, outline?
 
                           
 
