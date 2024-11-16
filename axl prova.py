@@ -4,7 +4,7 @@ from icecream import ic
 import pprint
 import csv
 import matplotlib.pyplot as plt
-"""
+'''
 players=[axl.Cooperator(),axl.Alternator()]
 match=axl.Match(players=players,turns=5,noise=0.1)
 ic(match.play())
@@ -15,8 +15,7 @@ ic(match.final_score_per_turn())
 ic(match.winner())
 ic(match.cooperation())  # The count of cooperations
 ic(match.normalised_cooperation())  # The count of cooperations per turn
-
-"""
+'''
 '''
 players2=[axl.Alternator(),axl.TitForTat(),axl.RandomTitForTat(),axl.Random(),axl.Cooperator(),axl.AdaptiveTitForTat()]
 tournament=axl.Tournament(players=players2,noise=0.1,prob_end=0.15,turns=20)

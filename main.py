@@ -3,6 +3,7 @@ import streamlit as st
 import axelrod as axl
 from icecream import ic
 import csv
+import pandas as pd
 
 #inizializzazione parametri
 players=st.multiselect("scegli strategie che parteciperann al torneo",axl.strategies,placeholder="scegli tre o più alternative: ",
@@ -23,6 +24,7 @@ turns=st.slider("scegli il numero di turni: ", min_value=0,max_value=1000)
 match=axl.Match(players=players2,turns=turns,noise=noise)
 
 results2=match.play()
+
 st.subheader("results")
 st.write(results2)
 st.subheader("sparklines")
@@ -39,7 +41,10 @@ st.subheader("cooperation")
 st.write(match.cooperation())  # The count of cooperations
 st.subheader("normalised cooperation")
 st.write(match.normalised_cooperation())  # The count of cooperations per turn
+st.subheader("state distribution")
+st.write(match.state_distribution())
 
+#parte grafica di un match (breve) simulato
 
 
 
@@ -72,11 +77,28 @@ with open('summary.csv', 'r') as outfile:
     csvreader = csv.reader(outfile)
     for row in csvreader:
         st.write(row)
- 
+
+df=pd.read_csv("summary.csv")
+st.subheader("prova dataframe pandas")
+st.dataframe(df)
+
+ct=st.radio("test radio button",(players))
+#df1=df[df["Name"]==ct]
+#count=df1["wins"].value_counts().head(20)
+
+#st.bar_chart(count)
+#video https://www.youtube.com/watch?v=hRPt4r_xVIg
+
+
+
+
+
 st.write("DATAFRAME")    
 st.dataframe(summary)
+#st.write(type(st.dataframe(summary)))
 st.write("TABLE") 
 st.table(summary)
+#st.write(type(st.table(summary)))
 
 st.subheader("scores")
 st.write(results.scores)
