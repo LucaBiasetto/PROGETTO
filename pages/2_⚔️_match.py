@@ -4,11 +4,17 @@ import axelrod as axl
 from icecream import ic
 import csv
 import pandas as pd
+import turtle
 
 st.set_page_config(page_title="Match",page_icon="⚔️")
 st.sidebar.success("select a page above")
 
 st.title("⚔️MATCH⚔️ ")
+with st.popover("Open popover"):
+    name = st.text_input("How would u like to be called?")
+
+st.write("Ready to create a head to head match ", name,"?")
+
 #inizializzazione parametri
 st.sidebar.header("Please filter here: ")
 
@@ -17,9 +23,6 @@ players2=[d()for d in players2]
 noise=st.sidebar.slider("scegli il rumore : ", min_value=0.0,max_value=1.0)
 prob_end=st.sidebar.slider("scegli la probabilità che il singolo match finisca ogni turno: ", min_value=0.0,max_value=1.0)
 turns=st.sidebar.slider("scegli il numero di turni: ", min_value=0,max_value=1000)
-
-
-
 
 
 
