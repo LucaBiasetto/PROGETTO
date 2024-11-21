@@ -27,7 +27,7 @@ turns=st.sidebar.slider("scegli il numero di turni: ", min_value=0,max_value=100
 
 
 #---------------Match--------------------
-
+#https://github.com/Axelrod-Python/Axelrod/blob/dev/axelrod/strategies/axelrod_first.py
 
 match=axl.Match(players=players2,turns=turns,noise=noise)
 
@@ -35,6 +35,11 @@ results2=match.play()
 
 st.subheader("results")
 st.write(results2)
+#for el in results2:
+    #
+
+
+
 st.subheader("sparklines")
 st.write((match.sparklines(c_symbol='🤝 ', d_symbol='❌ ')))
 st.subheader("scores")
@@ -54,3 +59,80 @@ st.write(match.state_distribution())
 
 #parte grafica di un match (breve) simulato
 
+'''
+import pygame
+import numpy as np
+from PIL import Image
+import streamlit as st
+
+# Inizializza Pygame
+pygame.init()
+screen_width, screen_height = 400, 300
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption("Pygame in Streamlit")
+
+# Colori e clock
+black = (0, 0, 0)
+white = (255, 255, 255)
+red = (255, 0, 0)
+clock = pygame.time.Clock()
+
+# Disegna sullo schermo di Pygame
+def draw_pygame_frame():
+    screen.fill(black)
+    pygame.draw.circle(screen, red, (200, 150), 50)  # Disegna un cerchio
+    pygame.display.update()
+
+# Cattura lo schermo come immagine
+def capture_frame():
+    frame = pygame.surfarray.array3d(screen)  # Ottieni i dati RGB dallo schermo
+    frame = np.rot90(frame, 3)  # Ruota per adattare l'orientamento
+    frame = np.flip(frame, axis=1)  # Capovolgi orizzontalmente
+    return Image.fromarray(frame)  # Converte in immagine PIL
+2. Integra Pygame in Streamlit
+Mostra i frame catturati in tempo reale all'interno dell'applicazione Streamlit.
+
+python
+Copia codice
+st.title("Esecuzione di Pygame in Streamlit")
+
+# Placeholder per lo schermo
+placeholder = st.empty()
+
+# Loop principale per l'aggiornamento
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Disegna il frame di Pygame
+    draw_pygame_frame()
+    
+    # Cattura il frame e mostralo su Streamlit
+    frame_image = capture_frame()
+    placeholder.image(frame_image, caption="Pygame Screen", use_column_width=True)
+    
+    clock.tick(30)  # Limita a 30 FPS
+
+# Chiudi Pygame
+pygame.quit()
+Come funziona?
+Pygame genera il contenuto grafico sul proprio schermo.
+Ogni frame viene catturato usando pygame.surfarray.array3d.
+Il frame viene convertito in un'immagine usando Pillow (Image.fromarray).
+Streamlit aggiorna il contenuto nel browser con st.image.
+Limitazioni
+Prestazioni: Pygame è progettato per applicazioni desktop, quindi il rendering continuo potrebbe rallentare se non ottimizzato.
+Schermo interattivo: Streamlit non supporta l'interattività completa di Pygame (come eventi di mouse o tastiera). Tuttavia, puoi utilizzare Streamlit per inviare eventi personalizzati a Pygame.
+Estensione: Aggiungi interazione
+Puoi integrare controlli Streamlit (come pulsanti) per simulare input utente in Pygame.
+
+python
+Copia codice
+if st.button("Muovi il cerchio"):
+    # Simula un'interazione (esempio: cambia posizione del cerchio)
+    pygame.draw.circle(screen, red, (250, 150), 50)
+Con questa configurazione, puoi mostrare schermate generate da Pygame direttamente su Streamlit in tempo reale!
+'''
+#altra alternativa Manim community
