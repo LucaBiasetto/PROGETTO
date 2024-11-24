@@ -4,6 +4,7 @@ import axelrod as axl
 from icecream import ic
 import csv
 import pandas as pd
+import altair as alt
 
 #TUTORIAL   https://www.youtube.com/watch?v=Sb0A9i6d320&list=PL7QI8ORyVSCaejt2LICRQtOTwmPiwKO2n&index=2
 
@@ -13,7 +14,7 @@ st.sidebar.success("select a page above")
 
 #inizializzazione parametri
 st.sidebar.header("Please filter here: ")
-players=st.sidebar.multiselect("scegli strategie che parteciperann al torneo",axl.strategies,placeholder="scegli tre o più alternative: ",
+players=st.sidebar.multiselect("scegli strategie che parteciperann al torneo",axl.axelrod_first_strategies,placeholder="scegli tre o più alternative: ",
                        format_func=lambda x: str(x).strip("<'>").split('.')[-1])
 players=[p()for p in players]
 #trovare lista di strategie che mi interessa 
@@ -24,6 +25,17 @@ turns=st.sidebar.slider("scegli il numero di turni: ", min_value=0,max_value=100
 
 
 #------------------Torneo--------------------------------
+st.radio("test radio button",(axl.axelrod_first_strategies),format_func=lambda x: str(x).strip("<'>").split('.')[-1])
+
+#https://github.com/Axelrod-Python/Axelrod/blob/dev/axelrod/strategies/axelrod_first.py implemento wiki
+
+
+
+
+
+
+
+
 tournament=axl.Tournament(players=players,noise=noise,prob_end=prob_end,turns=turns)
 results=tournament.play()
 summary = results.summarise()
@@ -46,13 +58,14 @@ st.write(p3)
 
 
 results.write_summary('summary.csv')
-
+"""
 with open('summary.csv', 'r') as outfile:
     csvreader = csv.reader(outfile)
     for row in csvreader:
         st.write(row)
 
 df=pd.read_csv("summary.csv")
+
 st.subheader("prova dataframe pandas")
 st.dataframe(df)
 
@@ -63,16 +76,43 @@ ct=st.radio("test radio button",(players))
 #st.bar_chart(count)
 #video https://www.youtube.com/watch?v=hRPt4r_xVIg
 
+"""
 
 
-
-
+data=pl.read_csv("summary.csv")
 st.write("DATAFRAME")    
 st.dataframe(summary)
-#st.write(type(st.dataframe(summary)))
-st.write("TABLE") 
-st.table(summary)
-#st.write(type(st.table(summary)))
+
+
+chart=(
+    alt.Chart(data)
+    .mark_circle()
+    .encode(alt.X("Wins"),alt.Y("Median_score"),alt.Color("Name"))
+)
+st.altair_chart(chart)
+x_y=st.multiselect("choose what x and y axes will represent",data.columns,placeholder="choose 2 : ",max_selections=2)
+st.write(x_y)
+chartInt=(
+    alt.Chart(data)
+    .mark_circle()
+    .encode(alt.X(x_y[0]),alt.Y(x_y[1]),alt.Color("Name"))
+)
+st.altair_chart(chartInt)
+chart2=(
+    alt.Chart(data)
+    .mark_circle()
+    .encode(alt.X("Wins"),alt.Y("Cooperation_rating"),alt.Color("Name"))
+)
+st.altair_chart(chart2)
+
+chart3=(
+    alt.Chart(data)
+    .mark_circle()
+    .encode(alt.X("Wins"),alt.Y("Rank"),alt.Color("Name"))
+)
+st.altair_chart(chart3)
+
+
 
 st.subheader("scores")
 st.write(results.scores)
@@ -91,7 +131,8 @@ st.write(results.wins)
 
 
 
-# domanda  come gestire grafici
+# domanda  come gestire grafici, implemeto wiki come? con tanti if?, aggiungere colonne oe scores al dataframe?con polars?,creare nuoa colonna rankings che parto da 1 e non da 0?, fare più grafici non interattivi?o solo uno ma interattivo on possibiliotà di cambiare asse x e y ?tengo grafici di axl?, come far funzionare Image?, for in match no funzionante
+
 
                           
 

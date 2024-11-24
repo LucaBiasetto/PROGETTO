@@ -39,16 +39,22 @@ turns=st.sidebar.slider("choose how many crimes did they commit(number of turns)
 match=axl.Match(players=players2,turns=turns,noise=noise)
 
 results2=match.play()
+l=[[2,3],[2,3]]
+st.write(l)
+st.write(l[0])
+for el in l:
+    st.write(el[0])
 
 st.subheader("results")
 st.write(results2)
 st.write(type(results2))
 anniD=0
 anniN=0
+#sembra avere problemi sul =="C" o sul and
 for el in results2:
     if (el[0]=="C" and el[1]=="C"):
-        anniD+=1
-        anniN+=1
+        anniD=anniD+1
+        anniN=anniN+1
     elif(el[0]=="D" and el[1]=="D"):
          anniD+=3
          anniN+=3
@@ -59,6 +65,7 @@ for el in results2:
         anniD+=0
         anniN+=5
 st.write("gli anni di galera sono :",anniD,anniN)
+
     
 
 
