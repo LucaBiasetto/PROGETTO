@@ -18,11 +18,12 @@ st.write("Ready to create a head to head match ", name,"?")
 #inizializzazione parametri
 st.sidebar.header("Please filter here: ")
 
-players2=st.sidebar.multiselect("scegli strategie che parteciperann al match",axl.strategies,placeholder="scegli due alternative: ",max_selections=2,format_func=lambda x: str(x).strip("<'>").split('.')[-1])#trovare lista di strategie che mi interessa
+st.subheader("i am presenting u here 2 prisoners, who committed many crimes togheter in their career, but now that they got busted it's prisoner-1 word against prisoner-2's. /n they have 2 choices to snitch or to admit, if they both admit they both get 1 year of judgment, if they both snitch they get 3 year of judgment each, if one snithes and the other doesn't the one who snitched gets 0 years and the other gets 5.    ")
+players2=st.sidebar.multiselect("choose what strategies will prisoner number 1 and priusoner number 2 will respectively perform",axl.strategies,placeholder="choose 2 : ",max_selections=2,format_func=lambda x: str(x).strip("<'>").split('.')[-1])#trovare lista di strategie che mi interessa
 players2=[d()for d in players2]
-noise=st.sidebar.slider("scegli il rumore : ", min_value=0.0,max_value=1.0)
-prob_end=st.sidebar.slider("scegli la probabilità che il singolo match finisca ogni turno: ", min_value=0.0,max_value=1.0)
-turns=st.sidebar.slider("scegli il numero di turni: ", min_value=0,max_value=1000)
+noise=st.sidebar.slider("choose the noise of the environment(likelihood of every choice to be changed by randomness) : ", min_value=0.0,max_value=1.0)
+prob_end=st.sidebar.slider("choose the likelihood of the math ending every turn : ", min_value=0.0,max_value=1.0)
+turns=st.sidebar.slider("choose how many crimes did they commit(number of turns): ", min_value=0,max_value=1000)
 
 
 
