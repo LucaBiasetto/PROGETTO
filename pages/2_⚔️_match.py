@@ -4,7 +4,7 @@ import axelrod as axl
 from icecream import ic
 import csv
 import pandas as pd
-import turtle
+from PIL import Image
 
 st.set_page_config(page_title="Match",page_icon="⚔️")
 st.sidebar.success("select a page above")
@@ -18,8 +18,14 @@ st.write("Ready to create a head to head match ", name,"?")
 #inizializzazione parametri
 st.sidebar.header("Please filter here: ")
 
-st.subheader("i am presenting u here 2 prisoners, who committed many crimes togheter in their career, but now that they got busted it's prisoner-1 word against prisoner-2's. /n they have 2 choices to snitch or to admit, if they both admit they both get 1 year of judgment, if they both snitch they get 3 year of judgment each, if one snithes and the other doesn't the one who snitched gets 0 years and the other gets 5.    ")
-players2=st.sidebar.multiselect("choose what strategies will prisoner number 1 and priusoner number 2 will respectively perform",axl.strategies,placeholder="choose 2 : ",max_selections=2,format_func=lambda x: str(x).strip("<'>").split('.')[-1])#trovare lista di strategie che mi interessa
+st.write("i am presenting u here 2 prisoners Dwight and Nikita, who committed many crimes togheter in their career, but now that they got busted it's prisoner-1(Dwight) word against prisoner-2(Nikita)'s. They have 2 choices to snitch or to admit, if they both admit they both get 1 year of judgment, if they both snitch they get 3 year of judgment each, if one snithes and the other doesn't the one who snitched gets 0 years and the other gets 5.    ")
+#img=Image.open("C:\Users\Luca Biasetto\OneDrive\Desktop\3zo anno\Sistemi 2\progetto\pygame_graphics\dwight.png")
+#st.image("img")
+#st.image("img1")
+
+
+
+players2=st.sidebar.multiselect("choose what strategies will prisoner number 1 and priusoner number 2 will respectively perform",axl.axelrod_first_strategies,placeholder="choose 2 : ",max_selections=2,format_func=lambda x: str(x).strip("<'>").split('.')[-1])#trovare lista di strategie che mi interessa
 players2=[d()for d in players2]
 noise=st.sidebar.slider("choose the noise of the environment(likelihood of every choice to be changed by randomness) : ", min_value=0.0,max_value=1.0)
 prob_end=st.sidebar.slider("choose the likelihood of the math ending every turn : ", min_value=0.0,max_value=1.0)
@@ -36,8 +42,26 @@ results2=match.play()
 
 st.subheader("results")
 st.write(results2)
-#for el in results2:
-    #
+st.write(type(results2))
+anniD=0
+anniN=0
+for el in results2:
+    if (el[0]=="C" and el[1]=="C"):
+        anniD+=1
+        anniN+=1
+    elif(el[0]=="D" and el[1]=="D"):
+         anniD+=3
+         anniN+=3
+    elif(el[0]=="C" and el[1]=="D"):
+        anniD+=5
+        anniN+=0
+    elif(el[0]=="D" and el[1]=="C"):
+        anniD+=0
+        anniN+=5
+st.write("gli anni di galera sono :",anniD,anniN)
+    
+
+
 
 
 
