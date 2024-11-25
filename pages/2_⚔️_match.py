@@ -19,7 +19,7 @@ st.write("Ready to create a head to head match ", name,"?")
 st.sidebar.header("Please filter here: ")
 
 st.write("i am presenting u here 2 prisoners Dwight and Nikita, who committed many crimes togheter in their career, but now that they got busted it's prisoner-1(Dwight) word against prisoner-2(Nikita)'s. They have 2 choices to snitch or to admit, if they both admit they both get 1 year of judgment, if they both snitch they get 3 year of judgment each, if one snithes and the other doesn't the one who snitched gets 0 years and the other gets 5.    ")
-#img=Image.open("C:\Users\Luca Biasetto\OneDrive\Desktop\3zo anno\Sistemi 2\progetto\pygame_graphics\dwight.png")
+#img=Image.open(r"C:\Users\Luca Biasetto\OneDrive\Desktop\3zo anno\Sistemi 2\progetto\pygame_graphics\dwight.png")#pathlib.Path()
 #st.image("img")
 #st.image("img1")
 
@@ -48,23 +48,29 @@ for el in l:
 st.subheader("results")
 st.write(results2)
 st.write(type(results2))
-anniD=0
-anniN=0
+
+
 #sembra avere problemi sul =="C" o sul and
-for el in results2:
-    if (el[0]=="C" and el[1]=="C"):
-        anniD=anniD+1
-        anniN=anniN+1
-    elif(el[0]=="D" and el[1]=="D"):
-         anniD+=3
-         anniN+=3
-    elif(el[0]=="C" and el[1]=="D"):
-        anniD+=5
-        anniN+=0
-    elif(el[0]=="D" and el[1]=="C"):
-        anniD+=0
-        anniN+=5
-st.write("gli anni di galera sono :",anniD,anniN)
+def func():
+    anniD=0
+    anniN=0
+    for el in results2:
+        if repr(el[0])=="C" and repr(el[1])=="C":
+            anniD=anniD+1
+            anniN=anniN+1
+        elif(repr(el[0])=="D" and repr(el[1])=="D"):
+            anniD+=3
+            anniN+=3
+        elif(repr(el[0])=="C" and repr(el[1])=="D"):
+            anniD+=5
+            anniN+=0
+        elif(repr(el[0])=="D" and repr(el[1])=="C"):
+            anniD+=0
+            anniN+=5
+        
+    return anniD, anniN
+st.write("gli anni di galera sono :",func())
+
 
     
 
