@@ -75,6 +75,21 @@ interactions[(0, 1)]
 
 #continuo moran process
 
-
+st.subheader("scores")
+st.write(results.scores)
+st.subheader("payoff_matrix")
+st.write(results.payoff_matrix)
+st.subheader("ranking")
+st.write(results.ranking)
+st.subheader("ranked_names")
+st.write(results.ranked_names)
+st.subheader("progress_bar")
+st.write(results.progress_bar)
+st.subheader("wins")
+st.write(results.wins)
+st.subheader("normalised scores")    
+st.write(results.normalised_scores)                       
+st.subheader("match length")    
+st.write(results.match_lengths)  
 
 

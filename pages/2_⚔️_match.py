@@ -39,11 +39,7 @@ turns=st.sidebar.slider("choose how many crimes did they commit(number of turns)
 match=axl.Match(players=players2,turns=turns,noise=noise)
 
 results2=match.play()
-l=[[2,3],[2,3]]
-st.write(l)
-st.write(l[0])
-for el in l:
-    st.write(el[0])
+
 
 st.subheader("results")
 st.write(results2)

@@ -94,44 +94,60 @@ x_y=st.multiselect("choose what x and y axes will represent",data.columns,placeh
 st.write(x_y)
 chartInt=(
     alt.Chart(data)
-    .mark_circle()
+    .mark_point()
     .encode(alt.X(x_y[0]),alt.Y(x_y[1]),alt.Color("Name"))
 )
 st.altair_chart(chartInt)
+col1,col2=st.columns(2)
 chart2=(
     alt.Chart(data)
-    .mark_circle()
-    .encode(alt.X("Wins"),alt.Y("Cooperation_rating"),alt.Color("Name"))
+    .mark_point()
+    .encode(alt.X("Wins"),alt.Y("Cooperation_rating"),alt.Color("Name")).properties(title="cooperation rate per wins")
 )
-st.altair_chart(chart2)
+with col1:
+    st.altair_chart(chart2)
 
+chart2_1=(
+    alt.Chart(data)
+    .mark_point()
+    .encode(alt.X("Rank"),alt.Y("Cooperation_rating"),alt.Color("Name"))).properties(title="cooperation rate per rank")
+with col2:
+    st.altair_chart(chart2_1)
+
+
+st.write("from the 2 graphs above and this one we can conclude that winning the single match and cooperating rarely doesn't payoff") 
 chart3=(
     alt.Chart(data)
-    .mark_circle()
-    .encode(alt.X("Wins"),alt.Y("Rank"),alt.Color("Name"))
+    .mark_point()
+    .encode(alt.X("Rank"),alt.Y("Wins"),alt.Color("Name"))
 )
 st.altair_chart(chart3)
 
+st.write("bozza perchè non ho la variabile di intresse score totale al posto di wins")
+chart4=(
+    alt.Chart(data)
+    .mark_bar()
+    .encode(alt.X("Wins"),alt.Y("Name"),alt.Color("Name"))
+)
+st.altair_chart(chart4)
 
 
+#https://axelrod.readthedocs.io/en/stable/how-to/access_tournament_results.html#tournament-results
 st.subheader("scores")
-st.write(results.scores)
+st.write(results.scores)#lungo n-1 ma sempre con 9 elementi dentro che non riesco a interpreatre
 st.subheader("payoff_matrix")
-st.write(results.payoff_matrix)
-st.subheader("ranking")
-st.write(results.ranking)
-st.subheader("ranked_names")
-st.write(results.ranked_names)
-st.subheader("progress_bar")
-st.write(results.progress_bar)
+st.write(results.payoff_matrix)#utilizzabile
 st.subheader("wins")
-st.write(results.wins)                           
+st.write(results.wins)#lungo n-1 ma sempre con 9 elementi dentro che non riesco a interpreatre
+st.subheader("normalised scores")    
+st.write(results.normalised_scores)  #lungo n-1 ma sempre con 9 elementi dentro che non riesco a interpreatre                     
+st.subheader("match length")    
+st.write(results.match_lengths) #lungo n-1 e n-1 elementi per elemento
 
 
 
 
-
-# domanda  come gestire grafici, implemeto wiki come? con tanti if?, aggiungere colonne oe scores al dataframe?con polars?,creare nuoa colonna rankings che parto da 1 e non da 0?, fare più grafici non interattivi?o solo uno ma interattivo on possibiliotà di cambiare asse x e y ?tengo grafici di axl?, come far funzionare Image?, for in match no funzionante
+# domanda  come gestire grafici, implemeto wiki come? con tanti if?, aggiungere colonne oe scores al dataframe?con polars?,creare nuoa colonna rankings che parto da 1 e non da 0?, fare più grafici non interattivi?o solo uno ma interattivo on possibiliotà di cambiare asse x e y ?tengo grafici di axl?, come far funzionare Image?, for in match no funzionante,scores è sempre lungo 9 prchè?
 
 
                           
