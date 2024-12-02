@@ -17,8 +17,10 @@ st.write("Ready to create a head to head match ", name,"?")
 
 #inizializzazione parametri
 st.sidebar.header("Please filter here: ")
+container = st.container(border=True)
 
-st.write("i am presenting u here 2 prisoners Dwight and Nikita, who committed many crimes togheter in their career, but now that they got busted it's prisoner-1(Dwight) word against prisoner-2(Nikita)'s. They have 2 choices to snitch or to admit, if they both admit they both get 1 year of judgment, if they both snitch they get 3 year of judgment each, if one snithes and the other doesn't the one who snitched gets 0 years and the other gets 5.    ")
+
+container.write("i am presenting u here 2 prisoners Dwight and Nikita, who committed many crimes togheter in their career, but now that they got busted it's prisoner-1(Dwight) word against prisoner-2(Nikita)'s. They have 2 choices to snitch or to admit, if they both admit they both get 1 year of judgment, if they both snitch they get 3 year of judgment each, if one snithes and the other doesn't the one who snitched gets 0 years and the other gets 5.    ")
 #img=Image.open(r"C:\Users\Luca Biasetto\OneDrive\Desktop\3zo anno\Sistemi 2\progetto\pygame_graphics\dwight.png")#pathlib.Path()
 #st.image("img")
 #st.image("img1")
@@ -46,7 +48,7 @@ st.write(results2)
 st.write(type(results2))
 
 
-#sembra avere problemi sul =="C" o sul and
+
 def func():
     anniD=0
     anniN=0

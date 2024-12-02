@@ -25,10 +25,13 @@ turns=st.sidebar.slider("scegli il numero di turni: ", min_value=0,max_value=100
 
 
 #------------------Torneo--------------------------------
-st.radio("test radio button",(axl.axelrod_first_strategies),format_func=lambda x: str(x).strip("<'>").split('.')[-1])
+pla=st.radio("test radio button",(axl.axelrod_first_strategies),format_func=lambda x: str(x).strip("<'>").split('.')[-1])
 
 #https://github.com/Axelrod-Python/Axelrod/blob/dev/axelrod/strategies/axelrod_first.py implemento wiki
-
+cont=st.container(border=True)
+if repr(pla)=="FirstByDavis":
+    cont.write("A player starts by cooperating for 10 rounds then plays Grudger,defecting if at any point the opponent has defected.")
+    
 
 
 
@@ -58,29 +61,13 @@ st.write(p3)
 
 
 results.write_summary('summary.csv')
-"""
-with open('summary.csv', 'r') as outfile:
-    csvreader = csv.reader(outfile)
-    for row in csvreader:
-        st.write(row)
 
-df=pd.read_csv("summary.csv")
+lim=len(players)+1
 
-st.subheader("prova dataframe pandas")
-st.dataframe(df)
-
-ct=st.radio("test radio button",(players))
-#df1=df[df["Name"]==ct]
-#count=df1["wins"].value_counts().head(20)
-
-#st.bar_chart(count)
-#video https://www.youtube.com/watch?v=hRPt4r_xVIg
-
-"""
-
-
-data=pl.read_csv("summary.csv")
+data=pl.read_csv("summary.csv").with_columns((pl.col("Rank") +int(1)).alias("Rank"))#aggiungo come colonna score totale e forse anche match length ecc
 st.write("DATAFRAME")    
+st.dataframe(data)
+st.write("datafram scritto con summary")
 st.dataframe(summary)
 
 
@@ -98,30 +85,31 @@ chartInt=(
     .encode(alt.X(x_y[0]),alt.Y(x_y[1]),alt.Color("Name"))
 )
 st.altair_chart(chartInt)
-col1,col2=st.columns(2)
+col1,col2,col3=st.columns(3)
 chart2=(
     alt.Chart(data)
     .mark_point()
-    .encode(alt.X("Wins"),alt.Y("Cooperation_rating"),alt.Color("Name")).properties(title="cooperation rate per wins")
+    .encode(alt.X("Wins").scale(domain=[0,lim]),alt.Y("Cooperation_rating"),alt.Color("Name",legend=None)).properties(title="cooperation rate per wins")
 )
 with col1:
-    st.altair_chart(chart2)
+    st.altair_chart(chart2,use_container_width=True)
 
 chart2_1=(
     alt.Chart(data)
     .mark_point()
-    .encode(alt.X("Rank"),alt.Y("Cooperation_rating"),alt.Color("Name"))).properties(title="cooperation rate per rank")
+    .encode(alt.X("Rank").scale(domain=[0,lim]),alt.Y("Cooperation_rating"),alt.Color("Name",legend=None)).properties(title="cooperation rate per rank"))
 with col2:
-    st.altair_chart(chart2_1)
+    st.altair_chart(chart2_1,use_container_width=True)
 
-
-st.write("from the 2 graphs above and this one we can conclude that winning the single match and cooperating rarely doesn't payoff") 
+container=st.container(border=True)
+container.write("from the graphs above what can we conclude about winning the single match and cooperating rarely? does it payoff? does winning the single battle win u the war?or doesn't it? does being a jerk and not cooperating work ?") 
 chart3=(
     alt.Chart(data)
     .mark_point()
-    .encode(alt.X("Rank"),alt.Y("Wins"),alt.Color("Name"))
+    .encode(alt.X("Rank").scale(domain=[0,lim]),alt.Y("Wins").scale(domain=[0,lim]),alt.Color("Name")).properties(title="rank of player per wins")
 )
-st.altair_chart(chart3)
+with col3:
+    st.altair_chart(chart3)
 
 st.write("bozza perchè non ho la variabile di intresse score totale al posto di wins")
 chart4=(
@@ -149,6 +137,6 @@ st.write(results.match_lengths) #lungo n-1 e n-1 elementi per elemento
 
 # domanda  come gestire grafici, implemeto wiki come? con tanti if?, aggiungere colonne oe scores al dataframe?con polars?,creare nuoa colonna rankings che parto da 1 e non da 0?, fare più grafici non interattivi?o solo uno ma interattivo on possibiliotà di cambiare asse x e y ?tengo grafici di axl?, come far funzionare Image?, for in match no funzionante,scores è sempre lungo 9 prchè?
 
-
+#noin funziona radiobutton, aggiungere colonne (scores ) e capire cosa significano, faccio wiki a tendina con tutti o interattiva con tanti iof macchuinosi?
                           
 
