@@ -6,6 +6,7 @@ import csv
 import pandas as pd
 from PIL import Image
 
+
 st.set_page_config(page_title="Match",page_icon="⚔️")
 st.sidebar.success("select a page above")
 
@@ -17,14 +18,6 @@ st.write("Ready to create a head to head match ", name,"?")
 
 #inizializzazione parametri
 st.sidebar.header("Please filter here: ")
-container = st.container(border=True)
-
-
-container.write("i am presenting u here 2 prisoners Dwight and Nikita, who committed many crimes togheter in their career, but now that they got busted it's prisoner-1(Dwight) word against prisoner-2(Nikita)'s. They have 2 choices to snitch or to admit, if they both admit they both get 1 year of judgment, if they both snitch they get 3 year of judgment each, if one snithes and the other doesn't the one who snitched gets 0 years and the other gets 5.    ")
-#img=Image.open(r"C:\Users\Luca Biasetto\OneDrive\Desktop\3zo anno\Sistemi 2\progetto\pygame_graphics\dwight.png")#pathlib.Path()
-#st.image("img")
-#st.image("img1")
-
 
 
 players2=st.sidebar.multiselect("choose what strategies will prisoner number 1 and priusoner number 2 will respectively perform",axl.axelrod_first_strategies,placeholder="choose 2 : ",max_selections=2,format_func=lambda x: str(x).strip("<'>").split('.')[-1])#trovare lista di strategie che mi interessa
@@ -81,7 +74,22 @@ if repr(pla).strip("<'>").split('.')[-1]=="FirstByTidemanAndChieruzzi":
 
 if repr(pla).strip("<'>").split('.')[-1]=="Random":
     cont.write("Randomly chooses beetwen cooperation and defection wirh a 50% chance")
+#mancano tit for tat e grudger
+#match
 
+st.title("PRISONERS CLASH")
+container = st.container(border=True)
+
+
+container.write("I am presenting u here 2 prisoners Dwight and Nikita, who committed many crimes togheter in their career, but now that they got busted it's prisoner-1(Dwight) word against prisoner-2(Nikita)'s. They have 2 choices to snitch or to admit, if they both admit they both get 1 year of judgment, if they both snitch they get 3 year of judgment each, if one snithes and the other doesn't the one who snitched gets 0 years and the other gets 5.    ")
+
+col11,col22=st.columns(2)
+#img=Image.open(r"C:\Users\Luca Biasetto\OneDrive\Desktop\3zo anno\Sistemi 2\progetto\pygame_graphics\dwight.png")#pathlib.Path()
+with col11 :
+    st.image(r"C:\\Users\\Luca Biasetto\\OneDrive\Desktop\3zo anno\Sistemi 2\\progetto\\pygame_graphics\dwight.png")
+
+with col22 :
+    st.image(r"C:\\Users\\Luca Biasetto\\OneDrive\Desktop\3zo anno\Sistemi 2\\progetto\\pygame_graphics\\Nikita.png")
 
 
 
@@ -96,7 +104,7 @@ results2=match.play()
 
 st.subheader("results")
 st.write(results2)
-st.write(type(results2))
+#st.write(type(results2))
 
 
 

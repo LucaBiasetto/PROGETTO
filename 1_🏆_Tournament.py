@@ -68,7 +68,7 @@ if repr(pla).strip("<'>").split('.')[-1]=="FirstByTidemanAndChieruzzi":
 
 if repr(pla).strip("<'>").split('.')[-1]=="Random":
     cont.write("Randomly chooses beetwen cooperation and defection wirh a 50% chance")
-
+#mancano tit for tat e grudger
 tournament=axl.Tournament(players=players,noise=noise,prob_end=prob_end,turns=turns)
 results=tournament.play()
 summary = results.summarise()
