@@ -68,7 +68,14 @@ if repr(pla).strip("<'>").split('.')[-1]=="FirstByTidemanAndChieruzzi":
 
 if repr(pla).strip("<'>").split('.')[-1]=="Random":
     cont.write("Randomly chooses beetwen cooperation and defection wirh a 50% chance")
-#mancano tit for tat e grudger
+
+if repr(pla).strip("<'>").split('.')[-1]=="TitForTat":
+    cont.write("Starts by cooperating, then it copies what the opponent did last turn ")    
+
+if repr(pla).strip("<'>").split('.')[-1]=="Grudger":
+    cont.write("Start by cooperating and if at any point the opponent defects  grudger will defect fot all the game") 
+
+
 tournament=axl.Tournament(players=players,noise=noise,prob_end=prob_end,turns=turns)
 results=tournament.play()
 summary = results.summarise()

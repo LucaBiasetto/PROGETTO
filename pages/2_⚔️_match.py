@@ -23,7 +23,7 @@ st.sidebar.header("Please filter here: ")
 players2=st.sidebar.multiselect("choose what strategies will prisoner number 1 and priusoner number 2 will respectively perform",axl.axelrod_first_strategies,placeholder="choose 2 : ",max_selections=2,format_func=lambda x: str(x).strip("<'>").split('.')[-1])#trovare lista di strategie che mi interessa
 players2=[d()for d in players2]
 noise=st.sidebar.slider("choose the noise of the environment(likelihood of every choice to be changed by randomness) : ", min_value=0.0,max_value=1.0)
-prob_end=st.sidebar.slider("choose the likelihood of the match ending every turn : ", min_value=0.0,max_value=1.0)
+#prob_end=st.sidebar.slider("choose the likelihood of the match ending every turn : ", min_value=0.0,max_value=1.0)
 turns=st.sidebar.slider("choose how many crimes did they commit(number of turns): ", min_value=0,max_value=1000)
 
 
@@ -74,7 +74,14 @@ if repr(pla).strip("<'>").split('.')[-1]=="FirstByTidemanAndChieruzzi":
 
 if repr(pla).strip("<'>").split('.')[-1]=="Random":
     cont.write("Randomly chooses beetwen cooperation and defection wirh a 50% chance")
-#mancano tit for tat e grudger
+
+if repr(pla).strip("<'>").split('.')[-1]=="TitForTat":
+    cont.write("Starts by cooperating, then it copies what the opponent did last turn ")    
+
+if repr(pla).strip("<'>").split('.')[-1]=="Grudger":
+    cont.write("Start by cooperating and if at any point the opponent defects  grudger will defect fot all the game") 
+
+
 #match
 
 st.title("PRISONERS CLASH")
