@@ -238,3 +238,7 @@ if st.button("Muovi il cerchio"):
 Con questa configurazione, puoi mostrare schermate generate da Pygame direttamente su Streamlit in tempo reale!
 '''
 #altra alternativa Manim community
+
+l,m,m,m,r= st.columns(5)
+with r:
+    st.write("𝓑𝓲𝓪𝓼𝓮𝓽𝓽𝓸 𝓛𝓾𝓬𝓪 ,  𝓪.𝓪.𝟐𝟎𝟐𝟒/𝟐𝟓, 𝟐𝟎𝟔𝟕𝟏𝟖𝟔")

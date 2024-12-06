@@ -16,3 +16,6 @@ st.video("https://www.youtube.com/watch?v=mScpHTIi-kM&list=WL&index=2&t=1416s/?e
 
 #st.html("<p><span style='text-decoration: line-through double red;'>Oops</span>!</p>")
 #st.html("<iframe width="560" height="315" src="https://www.youtube.com/embed/mScpHTIi-kM?si=JSvc0Jbs-qtJUWKA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>")
+l,m,m,m,r= st.columns(5)
+with r:
+    st.write("𝓑𝓲𝓪𝓼𝓮𝓽𝓽𝓸 𝓛𝓾𝓬𝓪 ,  𝓪.𝓪.𝟐𝟎𝟐𝟒/𝟐𝟓, 𝟐𝟎𝟔𝟕𝟏𝟖𝟔")

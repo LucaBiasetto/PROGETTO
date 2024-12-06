@@ -148,13 +148,21 @@ chart3=(
 with col3:
     st.altair_chart(chart3)
 
-st.write("bozza perchè non ho la variabile di intresse score totale al posto di wins")
+#grafico per mostrare retaliatory ma non so che x usare(c to c ecc) mentre l'altra asse sarà rank
 chart4=(
+    alt.Chart(data)
+    .mark_point()
+    .encode(alt.X("Rank").scale(domain=[0,lim]),alt.Y("CC_to_C_rate"),alt.Color("Name")).properties(title="rank of player per retaliatory")
+)
+st.altair_chart(chart4)
+
+st.write("bozza perchè non ho la variabile di intresse score totale al posto di wins")
+chart5=(
     alt.Chart(data)
     .mark_bar()
     .encode(alt.X("Wins"),alt.Y("Name"),alt.Color("Name"))
 )
-st.altair_chart(chart4)
+st.altair_chart(chart5)
 
 
 #https://axelrod.readthedocs.io/en/stable/how-to/access_tournament_results.html#tournament-results
@@ -172,8 +180,10 @@ st.write(results.match_lengths) #lungo n-1 e n-1 elementi per elemento
 
 
 
-# domanda  come gestire grafici, implemeto wiki come? con tanti if?, aggiungere colonne oe scores al dataframe?con polars?,creare nuoa colonna rankings che parto da 1 e non da 0?, fare più grafici non interattivi?o solo uno ma interattivo on possibiliotà di cambiare asse x e y ?tengo grafici di axl?, come far funzionare Image?, for in match no funzionante,scores è sempre lungo 9 prchè?
+# d aggiungere colonne oe scores al dataframe?con polars?scores è sempre lungo 9 prchè?
 
-#noin funziona radiobutton, aggiungere colonne (scores ) e capire cosa significano, faccio wiki a tendina con tutti o interattiva con tanti iof macchuinosi?
+#aggiungere colonne (scores ) e capire cosa significano
                           
-
+l,m,m,m,r= st.columns(5)
+with r:
+    st.write("𝓑𝓲𝓪𝓼𝓮𝓽𝓽𝓸 𝓛𝓾𝓬𝓪 ,  𝓪.𝓪.𝟐𝟎𝟐𝟒/𝟐𝟓, 𝟐𝟎𝟔𝟕𝟏𝟖𝟔")
