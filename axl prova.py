@@ -74,7 +74,7 @@ interactions[(0, 1)]
 
 
 #continuo moran process
-
+'''
 st.subheader("scores")
 st.write(results.scores)
 st.subheader("payoff_matrix")
@@ -93,3 +93,21 @@ st.subheader("match length")
 st.write(results.match_lengths)  
 
 
+#match
+st.subheader("sparklines")
+st.write((match.sparklines(c_symbol='🤝 ', d_symbol='❌ ')))
+st.subheader("scores")
+st.write(match.scores())
+st.subheader("final score")
+st.write(match.final_score())
+st.subheader("final score per turn")
+st.write(match.final_score_per_turn())
+st.subheader("winner")
+st.write(match.winner())
+st.subheader("cooperation")
+st.write(match.cooperation())  # The count of cooperations
+st.subheader("normalised cooperation")
+st.write(match.normalised_cooperation())  # The count of cooperations per turn
+st.subheader("state distribution")
+st.write(match.state_distribution())
+'''

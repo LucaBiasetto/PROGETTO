@@ -3,7 +3,8 @@ import streamlit as st
 import axelrod as axl
 from icecream import ic
 import csv
-import pandas as pd
+import pygame
+from io import BytesIO
 from PIL import Image
 
 
@@ -93,16 +94,10 @@ container.write("I am presenting u here 2 prisoners Dwight and Nikita, who commi
 col11,col22=st.columns(2)
 #img=Image.open(r"C:\Users\Luca Biasetto\OneDrive\Desktop\3zo anno\Sistemi 2\progetto\pygame_graphics\dwight.png")#pathlib.Path()
 with col11 :
-    st.image(r"C:\\Users\\Luca Biasetto\\OneDrive\Desktop\3zo anno\Sistemi 2\\progetto\\pygame_graphics\dwight.png")
+    st.image(r"C:\\Users\\Luca Biasetto\\OneDrive\Desktop\3zo anno\Sistemi 2\\progetto\\pygame_graphics\\americano.png",caption="Dwight, Prisoner 1",use_container_width=True)
 
 with col22 :
-    st.image(r"C:\\Users\\Luca Biasetto\\OneDrive\Desktop\3zo anno\Sistemi 2\\progetto\\pygame_graphics\\Nikita.png")
-
-
-
-
-
-
+    st.image(r"C:\\Users\\Luca Biasetto\\OneDrive\Desktop\3zo anno\Sistemi 2\\progetto\\pygame_graphics\\russovero.png",caption="NIkita, prisoner 2",use_container_width=True)
 
 match=axl.Match(players=players2,turns=turns,noise=noise)
 
@@ -113,131 +108,119 @@ st.subheader("results")
 st.write(results2)
 #st.write(type(results2))
 
+anniD=0
+anniN=0
+for el in results2:
+    if repr(el[0])=="C" and repr(el[1])=="C":
+        anniD=anniD+1
+        anniN=anniN+1
+    elif(repr(el[0])=="D" and repr(el[1])=="D"):
+        anniD+=3
+        anniN+=3
+    elif(repr(el[0])=="C" and repr(el[1])=="D"):
+        anniD+=5
+        anniN+=0
+    elif(repr(el[0])=="D" and repr(el[1])=="C"):
+        anniD+=0
+        anniN+=5
+st.write("gli anni di galera sono:",anniD,anniN)
 
 
-def func():
-    anniD=0
-    anniN=0
-    for el in results2:
-        if repr(el[0])=="C" and repr(el[1])=="C":
-            anniD=anniD+1
-            anniN=anniN+1
-        elif(repr(el[0])=="D" and repr(el[1])=="D"):
-            anniD+=3
-            anniN+=3
-        elif(repr(el[0])=="C" and repr(el[1])=="D"):
-            anniD+=5
-            anniN+=0
-        elif(repr(el[0])=="D" and repr(el[1])=="C"):
-            anniD+=0
-            anniN+=5
-        
-    return anniD, anniN
-st.write("gli anni di galera sono :",func())
-
-
-    
-
-
-
-
-
-st.subheader("sparklines")
-st.write((match.sparklines(c_symbol='🤝 ', d_symbol='❌ ')))
-st.subheader("scores")
-st.write(match.scores())
-st.subheader("final score")
-st.write(match.final_score())
-st.subheader("final score per turn")
-st.write(match.final_score_per_turn())
-st.subheader("winner")
-st.write(match.winner())
-st.subheader("cooperation")
-st.write(match.cooperation())  # The count of cooperations
-st.subheader("normalised cooperation")
-st.write(match.normalised_cooperation())  # The count of cooperations per turn
-st.subheader("state distribution")
-st.write(match.state_distribution())
-
-#parte grafica di un match (breve) simulato
-
-'''
-import pygame
-import numpy as np
-from PIL import Image
-import streamlit as st
+st.title("Controllo Pygame con Streamlit")
+st.write("Premi il pulsante per avanzare di un turno")
 
 # Inizializza Pygame
 pygame.init()
-screen_width, screen_height = 400, 300
+
+# Dimensioni dello schermo
+
+screen_width, screen_height = 800, 600
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("Pygame in Streamlit")
+pygame.display.set_caption("Prisoners Clash")
 
-# Colori e clock
-black = (0, 0, 0)
+game_bg = pygame.image.load('pygame_graphics\\tribunale.png').convert_alpha()  # Immagine per il gioco
+game_over_bg = pygame.image.load("pygame_graphics\\game_end.png").convert_alpha()  # Immagine per il Game Over
+
+# Ridimensiona gli sfondi per adattarli allo schermo
+game_bg = pygame.transform.scale(game_bg, (screen_width, screen_height))
+game_over_bg = pygame.transform.scale(game_over_bg, (screen_width, screen_height))#al momento inutili 
+
+# Colori
 white = (255, 255, 255)
-red = (255, 0, 0)
-clock = pygame.time.Clock()
+black = (0, 0, 0)
 
-# Disegna sullo schermo di Pygame
-def draw_pygame_frame():
-    screen.fill(black)
-    pygame.draw.circle(screen, red, (200, 150), 50)  # Disegna un cerchio
-    pygame.display.update()
+# Font
+font = pygame.font.Font(None, 74)
 
-# Cattura lo schermo come immagine
-def capture_frame():
-    frame = pygame.surfarray.array3d(screen)  # Ottieni i dati RGB dallo schermo
-    frame = np.rot90(frame, 3)  # Ruota per adattare l'orientamento
-    frame = np.flip(frame, axis=1)  # Capovolgi orizzontalmente
-    return Image.fromarray(frame)  # Converte in immagine PIL
-2. Integra Pygame in Streamlit
-Mostra i frame catturati in tempo reale all'interno dell'applicazione Streamlit.
 
-python
-Copia codice
-st.title("Esecuzione di Pygame in Streamlit")
 
-# Placeholder per lo schermo
-placeholder = st.empty()
+font1 = pygame.font.Font(None, 90)
+font2 = pygame.font.Font(None, 90)
 
-# Loop principale per l'aggiornamento
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+# Stato del gioco
+tick_count = st.session_state.get("tick_count", 0)  # Mantieni il conteggio dei tick tra i reloads
+game_state = "running"  # Possibili stati: "running", "game_over"
 
-    # Disegna il frame di Pygame
-    draw_pygame_frame()
-    
-    # Cattura il frame e mostralo su Streamlit
-    frame_image = capture_frame()
-    placeholder.image(frame_image, caption="Pygame Screen", use_column_width=True)
-    
-    clock.tick(30)  # Limita a 30 FPS
 
-# Chiudi Pygame
+
+# Controllo del tick
+if st.button("Avanza un turno"):
+    tick_count += 1
+    st.session_state["tick_count"] = tick_count  # Salva lo stato del tick
+
+# Disegna il frame di Pygame
+screen.fill(white)
+
+
+
+annid=0
+annin=0
+
+if repr(results2[tick_count][0])=="C" and repr(results2[tick_count][1])=="C":
+    annid=annid+1
+    annin=annin+1
+elif repr(results2[tick_count][0])=="D" and repr(results2[tick_count][1])=="D":
+    annid+=3
+    annin+=3
+elif repr(results2[tick_count][0])=="C" and repr(results2[tick_count][1])=="D":
+    annid+=5
+    annin+=0
+elif repr(results2[tick_count][0])=="D" and repr(results2[tick_count][1])=="C":
+    annid+=0
+    annin+=5
+
+
+
+
+text = font.render(f"Turno {tick_count}", True, black)
+text_rect = text.get_rect(center=(screen_width // 2, screen_height // 2))
+screen.blit(text, text_rect)
+
+text1 = font1.render(f"+ {annid}", True, black)
+text_rect1 = text1.get_rect(center=(250,200))
+screen.blit(text1, text_rect1)
+
+text2 = font2.render(f"+ {annin}", True, black)
+text_rect2 = text2.get_rect(center=(250,400))
+screen.blit(text2, text_rect2)
+
+# Converti la superficie Pygame in un'immagine visualizzabile in Streamlit
+buffer = BytesIO()
+pygame_image = pygame.image.tostring(screen, "RGBA")
+image = Image.frombytes("RGBA", (screen_width, screen_height), pygame_image)
+image.save(buffer, format="PNG")
+st.image(buffer.getvalue(), caption="Schermata Pygame")
+
+# Esci da Pygame (opzionale, non necessario durante l'esecuzione continua)
 pygame.quit()
-Come funziona?
-Pygame genera il contenuto grafico sul proprio schermo.
-Ogni frame viene catturato usando pygame.surfarray.array3d.
-Il frame viene convertito in un'immagine usando Pillow (Image.fromarray).
-Streamlit aggiorna il contenuto nel browser con st.image.
-Limitazioni
-Prestazioni: Pygame è progettato per applicazioni desktop, quindi il rendering continuo potrebbe rallentare se non ottimizzato.
-Schermo interattivo: Streamlit non supporta l'interattività completa di Pygame (come eventi di mouse o tastiera). Tuttavia, puoi utilizzare Streamlit per inviare eventi personalizzati a Pygame.
-Estensione: Aggiungi interazione
-Puoi integrare controlli Streamlit (come pulsanti) per simulare input utente in Pygame.
 
-python
-Copia codice
-if st.button("Muovi il cerchio"):
-    # Simula un'interazione (esempio: cambia posizione del cerchio)
-    pygame.draw.circle(screen, red, (250, 150), 50)
-Con questa configurazione, puoi mostrare schermate generate da Pygame direttamente su Streamlit in tempo reale!
-'''
-#altra alternativa Manim community
+
+#sincronizzo i tick e il ciclo for, trovo modo per non eseguire sempre match perchè ogno volta che clicco button mi cambiano i risultati se c'è rumore
+
+        
+
+
+
 
 l,m,m,m,r= st.columns(5)
 with r:
