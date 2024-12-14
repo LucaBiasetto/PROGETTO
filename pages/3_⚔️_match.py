@@ -138,6 +138,10 @@ screen_width, screen_height = 800, 600
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Prisoners Clash")
 
+p1= pygame.image.load('pygame_graphics\\dwight1.png').convert_alpha() 
+p1=pygame.transform.smoothscale(p1,(370,420))
+p2= pygame.image.load('pygame_graphics\\nikita1.png').convert_alpha() 
+p2=pygame.transform.smoothscale(p2,(370,420))#ridimensiono immagine
 game_bg = pygame.image.load('pygame_graphics\\tribunale.png').convert_alpha()  # Immagine per il gioco
 game_over_bg = pygame.image.load("pygame_graphics\\game_end.png").convert_alpha()  # Immagine per il Game Over
 
@@ -150,12 +154,9 @@ white = (255, 255, 255)
 black = (0, 0, 0)
 
 # Font
-font = pygame.font.Font(None, 74)
-
-
-
-font1 = pygame.font.Font(None, 90)
-font2 = pygame.font.Font(None, 90)
+font = pygame.font.Font(None, 50)
+font1 = pygame.font.Font(None, 40)
+font2 = pygame.font.Font(None, 40)#inutili
 
 # Stato del gioco
 tick_count = st.session_state.get("tick_count", 0)  # Mantieni il conteggio dei tick tra i reloads
@@ -164,17 +165,35 @@ game_state = "running"  # Possibili stati: "running", "game_over"
 
 
 # Controllo del tick
-if st.button("Avanza un turno"):
-    tick_count += 1
-    st.session_state["tick_count"] = tick_count  # Salva lo stato del tick
+a,b,c=st.columns(3)
+with a:
+    if st.button("Go to the recap"):
+        screen.blit(game_over_bg, (0, 0))
+        #capisco come fare in modo che se esegue questo salta la parte sotto di game, ma questo appare anche alla fine dei turni
+    
+with b:
+    if st.button("Go to next turn"):
+        tick_count += 1
+        st.session_state["tick_count"] = tick_count  # Salva lo stato del tick
+    st.write(tick_count)
+with c:
+    if st.button("Go to previous turn"):
+        ba#non so se lo implementerò
 
 # Disegna il frame di Pygame
-screen.fill(white)
 
 
+screen.blit(game_bg, (0, 0))
 
 annid=0
 annin=0
+annitot1=0
+annitot2=0
+#non entra nell'if
+#if tick_count==0:
+    #annitot1=0
+   #annitot2=0
+
 
 if repr(results2[tick_count][0])=="C" and repr(results2[tick_count][1])=="C":
     annid=annid+1
@@ -189,20 +208,33 @@ elif repr(results2[tick_count][0])=="D" and repr(results2[tick_count][1])=="C":
     annid+=0
     annin+=5
 
+annitot1+=annid
+annitot2+=annin
 
 
-
-text = font.render(f"Turno {tick_count}", True, black)
-text_rect = text.get_rect(center=(screen_width // 2, screen_height // 2))
+text = font.render(f"Turn {tick_count}", True, black)
+text_rect = text.get_rect(center=(70,50))
 screen.blit(text, text_rect)
 
+text0 = font.render(f"Judgment {annitot1,annitot2}", True, black)
+text0_rect = text.get_rect(center=(340,30))
+screen.blit(text0, text0_rect)
+
 text1 = font1.render(f"+ {annid}", True, black)
-text_rect1 = text1.get_rect(center=(250,200))
+text_rect1 = text1.get_rect(center=(180,220))
 screen.blit(text1, text_rect1)
 
 text2 = font2.render(f"+ {annin}", True, black)
-text_rect2 = text2.get_rect(center=(250,400))
+text_rect2 = text2.get_rect(center=(600,220))
 screen.blit(text2, text_rect2)
+
+#p1 e p2
+p1_rect=p1.get_rect(center=(180,430))
+screen.blit(p1,p1_rect)
+
+p2_rect=p2.get_rect(center=(600,420))
+screen.blit(p2,p2_rect)
+
 
 # Converti la superficie Pygame in un'immagine visualizzabile in Streamlit
 buffer = BytesIO()
@@ -215,7 +247,7 @@ st.image(buffer.getvalue(), caption="Schermata Pygame")
 pygame.quit()
 
 
-#sincronizzo i tick e il ciclo for, trovo modo per non eseguire sempre match perchè ogno volta che clicco button mi cambiano i risultati se c'è rumore
+#sincronizzo i tick e il ciclo for, trovo modo per non eseguire sempre match perchè ogno volta che clicco button mi cambiano i risultati se c'è rumore, non so come usare tick_count e quindi non posso creare variabile anni parziali del turno e devo creare 2 variabiuli diverse annin e annid anniN e anniD e nemmeno usare la condizione if tick_count == turns+1 o turns per decretare la fine del match,capisco come fare in modo che se esegue st button salta la parte sotto di game, ma questo appare anche alla fine dei turni, e aggiungo go to previus turn?
 
         
 
