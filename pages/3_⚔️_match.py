@@ -94,10 +94,10 @@ container.write("I am presenting u here 2 prisoners Dwight and Nikita, who commi
 col11,col22=st.columns(2)
 #img=Image.open(r"C:\Users\Luca Biasetto\OneDrive\Desktop\3zo anno\Sistemi 2\progetto\pygame_graphics\dwight.png")#pathlib.Path()
 with col11 :
-    st.image(r"C:\\Users\\Luca Biasetto\\OneDrive\Desktop\3zo anno\Sistemi 2\\progetto\\pygame_graphics\\americano.png",caption="Dwight, Prisoner 1",use_container_width=True)
+    st.image(r"C:\\Users\\Luca Biasetto\\OneDrive\Desktop\3zo anno\Sistemi 2\\progetto\\pygame_graphics\\dwight1.png",caption="Dwight, Prisoner 1",use_container_width=True)
 
 with col22 :
-    st.image(r"C:\\Users\\Luca Biasetto\\OneDrive\Desktop\3zo anno\Sistemi 2\\progetto\\pygame_graphics\\russovero.png",caption="NIkita, prisoner 2",use_container_width=True)
+    st.image(r"C:\\Users\\Luca Biasetto\\OneDrive\Desktop\3zo anno\Sistemi 2\\progetto\\pygame_graphics\\nikita1.png",caption="NIkita, prisoner 2",use_container_width=True)
 
 match=axl.Match(players=players2,turns=turns,noise=noise)
 
@@ -126,7 +126,7 @@ for el in results2:
 st.write("gli anni di galera sono:",anniD,anniN)
 
 
-st.title("Controllo Pygame con Streamlit")
+st.title("Prisoners Clash")
 st.write("Premi il pulsante per avanzare di un turno")
 
 # Inizializza Pygame
@@ -175,7 +175,7 @@ with b:
     if st.button("Go to next turn"):
         tick_count += 1
         st.session_state["tick_count"] = tick_count  # Salva lo stato del tick
-    st.write(tick_count)
+    
 with c:
     if st.button("Go to previous turn"):
         ba#non so se lo implementerò
@@ -249,7 +249,8 @@ pygame.quit()
 
 #sincronizzo i tick e il ciclo for, trovo modo per non eseguire sempre match perchè ogno volta che clicco button mi cambiano i risultati se c'è rumore, non so come usare tick_count e quindi non posso creare variabile anni parziali del turno e devo creare 2 variabiuli diverse annin e annid anniN e anniD e nemmeno usare la condizione if tick_count == turns+1 o turns per decretare la fine del match,capisco come fare in modo che se esegue st button salta la parte sotto di game, ma questo appare anche alla fine dei turni, e aggiungo go to previus turn?
 
-        
+if repr(tick_count) == 5:
+    st.write("funziona")  
 
 
 
