@@ -99,7 +99,7 @@ with col11 :
 with col22 :
     st.image(r"C:\\Users\\Luca Biasetto\\OneDrive\Desktop\3zo anno\Sistemi 2\\progetto\\pygame_graphics\\nikita1.png",caption="NIkita, prisoner 2",use_container_width=True)
 
-match=axl.Match(players=players2,turns=turns,noise=noise)
+match=axl.Match(players=players2,turns=turns,noise=noise,seed=235)
 
 results2=match.play()
 
@@ -159,7 +159,8 @@ black = (0, 0, 0)
 font = pygame.font.Font(None, 50)
 font1 = pygame.font.Font(None, 40)
 font2 = pygame.font.Font(None, 40)#inutili
-
+annitot1=st.session_state.get("annitot1", 0)
+annitot2=st.session_state.get("annitot2", 0)
 # Stato del gioco
 running = True
 while running:
@@ -173,16 +174,19 @@ while running:
     if game_state == "running":
 
         # Controllo del tick
+        if tick_count==-1:
+            st.session_state["annitot1"]=0
+            st.session_state["annitot2"]=0
         a,b,c=st.columns(3)
         
         with a:
-            if st.button("Go to the recap" ):
+            if st.button("Go to the recap"):
                 game_state="recap"
                 screen.blit(game_over_bg, (0, 0))
                 #capisco come fare in modo che se esegue questo salta la parte sotto di game, ma questo appare anche alla fine dei turni
             
         with b:
-            if st.button("Go to next turn",key="01"):
+            if st.button("Go to next turn") :
                 tick_count += 1
                 st.session_state["tick_count"] = tick_count  # Salva lo stato del tick
                 #st.write(type(tick_count)) intero
@@ -196,17 +200,17 @@ while running:
 
         annid=0
         annin=0
-        annitot1=0
-        annitot2=0
+        
         #non entra nell'if
-        #if tick_count==0:
-            #annitot1=0
-        #annitot2=0
+        
         
         #PROBLEMI, SOSTITUIRE 2 CON turns o turns+1
         #if tick_count== 2:
             #game_state=="recap"
-
+        #molto ridondante
+        if tick_count==turns-1 : 
+            st.session_state["tick_count"] = -1
+        
         if repr(results2[tick_count][0])=="C" and repr(results2[tick_count][1])=="C":
             annid=annid+1
             annin=annin+1
@@ -220,11 +224,10 @@ while running:
             annid+=0
             annin+=5
 
-        annitot1+=annid
-        annitot2+=annin
+        st.session_state["annitot1"]=annitot1+annid
+        st.session_state["annitot2"]=annitot2+annin
 
-
-        text = font.render(f"Turn {tick_count}", True, black)
+        text = font.render(f"Turn {tick_count+1}", True, black)
         text_rect = text.get_rect(center=(70,50))
         screen.blit(text, text_rect)
 
@@ -276,6 +279,7 @@ while running:
         
 
     # Converti la superficie Pygame in un'immagine visualizzabile in Streamlit
+    #provo a aggiungere un if game_state==running così si aggiorna solo se è effettivamente dinamica
     buffer = BytesIO()
     pygame_image = pygame.image.tostring(screen, "RGBA")
     image = Image.frombytes("RGBA", (screen_width, screen_height), pygame_image)

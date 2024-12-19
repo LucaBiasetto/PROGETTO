@@ -76,7 +76,7 @@ if repr(pla).strip("<'>").split('.')[-1]=="Grudger":
     cont.write("Start by cooperating and if at any point the opponent defects  grudger will defect fot all the game") 
 
 
-tournament=axl.Tournament(players=players,noise=noise,prob_end=prob_end,turns=turns)
+tournament=axl.Tournament(players=players,noise=noise,prob_end=prob_end,turns=turns,repetitions=1)
 results=tournament.play()
 summary = results.summarise()
 st.title('Risultati torneo')
@@ -100,8 +100,9 @@ st.write(p3)
 results.write_summary('summary.csv')
 
 lim=len(players)+1
-
-data=pl.read_csv("summary.csv").with_columns((pl.col("Rank") +int(1)).alias("Rank"))#aggiungo come colonna score totale e forse anche match length ecc
+actual_scores = [l[0] for l in results.scores]
+st.write(actual_scores)
+data=pl.read_csv("summary.csv").with_columns((pl.col("Rank") +int(1)).alias("Rank"),scores=pl.Series(actual_scores))#aggiungo come colonna score totale e forse anche match length ecc
 st.write("DATAFRAME")    
 st.dataframe(data)
 st.write("datafram scritto con summary")
@@ -160,14 +161,14 @@ st.write("bozza perchè non ho la variabile di intresse score totale al posto di
 chart5=(
     alt.Chart(data)
     .mark_bar()
-    .encode(alt.X("Wins"),alt.Y("Name"),alt.Color("Name"))
+    .encode(alt.X("scores"),alt.Y("Name",sort="-x"))
 )
 st.altair_chart(chart5)
 
 
 #https://axelrod.readthedocs.io/en/stable/how-to/access_tournament_results.html#tournament-results
 st.subheader("scores")
-st.write(results.scores)#lungo n-1 ma sempre con 9 elementi dentro che non riesco a interpreatre
+st.write(results.scores)#lungo n-1 ma sempre con 9 elementi dentro che non riesco a interpreatre sistemato
 st.subheader("payoff_matrix")
 st.write(results.payoff_matrix)#utilizzabile
 st.subheader("wins")
