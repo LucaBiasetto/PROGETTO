@@ -162,6 +162,7 @@ font2 = pygame.font.Font(None, 40)#inutili
 annitot1=st.session_state.get("annitot1", 0)
 annitot2=st.session_state.get("annitot2", 0)
 # Stato del gioco
+
 running = True
 while running:
     for event in pygame.event.get():
@@ -189,7 +190,7 @@ while running:
             if st.button("Go to next turn") :
                 tick_count += 1
                 st.session_state["tick_count"] = tick_count  # Salva lo stato del tick
-                #st.write(type(tick_count)) intero
+                
             
         
 
@@ -201,13 +202,6 @@ while running:
         annid=0
         annin=0
         
-        #non entra nell'if
-        
-        
-        #PROBLEMI, SOSTITUIRE 2 CON turns o turns+1
-        #if tick_count== 2:
-            #game_state=="recap"
-        #molto ridondante
         if tick_count==turns-1 : 
             st.session_state["tick_count"] = -1
         
