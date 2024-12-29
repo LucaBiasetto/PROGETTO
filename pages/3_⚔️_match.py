@@ -290,7 +290,7 @@ while running:
 pygame.quit()
 
 
-#sincronizzo i tick e il ciclo for, trovo modo per non eseguire sempre match perchè ogno volta che clicco button mi cambiano i risultati se c'è rumore, non so come usare tick_count e quindi non posso creare variabile anni parziali del turno e devo creare 2 variabiuli diverse annin e annid anniN e anniD e nemmeno usare la condizione if tick_count == turns+1 o turns per decretare la fine del match,capisco come fare in modo che se esegue st button salta la parte sotto di game, ma questo appare anche alla fine dei turni, e aggiungo go to previus turn?,sistemo if per passare a recap se fine turni
+#sistemo e ignoro errore mostrato
 
 if repr(tick_count) == 5:
     st.write("funziona")  

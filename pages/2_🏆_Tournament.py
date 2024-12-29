@@ -5,8 +5,7 @@ from icecream import ic
 import csv
 import pandas as pd
 import altair as alt
-
-#TUTORIAL   https://www.youtube.com/watch?v=Sb0A9i6d320&list=PL7QI8ORyVSCaejt2LICRQtOTwmPiwKO2n&index=2
+#in the console type uv run -n streamlit run _filename_
 
 
 st.set_page_config(page_title="Tournament",page_icon="🏆")
@@ -14,20 +13,20 @@ st.sidebar.success("select a page above")
 
 #inizializzazione parametri
 st.sidebar.header("Please filter here: ")
-players=st.sidebar.multiselect("scegli strategie che parteciperann al torneo",axl.axelrod_first_strategies,placeholder="scegli tre o più alternative: ",
+players=st.sidebar.multiselect("choose the strategies of the tournament",axl.axelrod_first_strategies,placeholder="choose 3 or more: ",
                        format_func=lambda x: str(x).strip("<'>").split('.')[-1])
 players=[p()for p in players]
 #trovare lista di strategie che mi interessa 
 #st.write(type(players[0]))
-noise=st.sidebar.slider("scegli il rumore : ", min_value=0.0,max_value=1.0)
-prob_end=st.sidebar.slider("scegli la probabilità che il singolo match finisca ogni turno: ", min_value=0.0,max_value=1.0)
-turns=st.sidebar.slider("scegli il numero di turni: ", min_value=0,max_value=1000)
+noise=st.sidebar.slider("select the noise (probabilty of an action to be misunderstood) : ", min_value=0.0,max_value=1.0)
+prob_end=st.sidebar.slider("select the probability for the match to end every turn: ", min_value=0.0,max_value=1.0)
+turns=st.sidebar.slider("select number of turns: ", min_value=0,max_value=1000)
 
 
 #------------------Torneo--------------------------------
-pla=st.radio("test radio button",(axl.axelrod_first_strategies),format_func=lambda x: str(x).strip("<'>").split('.')[-1])
+pla=st.radio("wiki",(axl.axelrod_first_strategies),format_func=lambda x: str(x).strip("<'>").split('.')[-1])
 
-#https://github.com/Axelrod-Python/Axelrod/blob/dev/axelrod/strategies/axelrod_first.py implemento wiki
+
 cont=st.container(border=True)
 if repr(pla).strip("<'>").split('.')[-1]=="FirstByDavis":
     cont.write("A player starts by cooperating for 10 rounds then plays Grudger,defecting if at any point the opponent has defected.")
@@ -80,9 +79,9 @@ tournament=axl.Tournament(players=players,noise=noise,prob_end=prob_end,turns=tu
 results=tournament.play()
 summary = results.summarise()
 st.title('Risultati torneo')
-st.write(summary)
+#st.write(summary)
 
-
+#axelrod library graphs
 plot = axl.Plot(results)
 p = plot.boxplot()
 p2 = plot.winplot()
@@ -91,7 +90,7 @@ st.subheader("Boxplot")
 st.write(p)
 st.subheader("Winplot")
 st.write(p2)
-st.subheader("Payoffplot")
+st.subheader("Payoffplot(payoff per turn)")
 st.write(p3)
 
 
@@ -101,13 +100,19 @@ results.write_summary('summary.csv')
 
 lim=len(players)+1
 actual_scores = [l[0] for l in results.scores]
-st.write(actual_scores)
-data=pl.read_csv("summary.csv").with_columns((pl.col("Rank") +int(1)).alias("Rank"),scores=pl.Series(actual_scores))#aggiungo come colonna score totale e forse anche match length ecc
-st.write("DATAFRAME")    
-st.dataframe(data)
-st.write("datafram scritto con summary")
-st.dataframe(summary)
+#st.write(actual_scores)
+actual_scores=sorted(actual_scores,reverse=True)
+data=pl.read_csv("summary.csv").with_columns((pl.col("Rank") +int(1)).alias("Rank"),score=pl.Series(actual_scores)).select(["Rank","Name","score","Wins","Median_score","Cooperation_rating","Initial_C_rate","CC_rate","CD_rate","DC_rate","DD_rate","CC_to_C_rate","CD_to_C_rate","DC_to_C_rate","DD_to_C_rate"])
 
+st.dataframe(data)
+
+chart5=(
+    alt.Chart(data)
+    .mark_bar()
+    .encode(alt.X("score"),alt.Y("Name",sort="-x"))
+    .properties(title="Tournament rankings")
+)
+st.altair_chart(chart5)
 
 chart=(
     alt.Chart(data)
@@ -115,14 +120,7 @@ chart=(
     .encode(alt.X("Wins"),alt.Y("Median_score"),alt.Color("Name"))
 )
 st.altair_chart(chart)
-x_y=st.multiselect("choose what x and y axes will represent",data.columns,placeholder="choose 2 : ",max_selections=2)
-st.write(x_y)
-chartInt=(
-    alt.Chart(data)
-    .mark_point()
-    .encode(alt.X(x_y[0]),alt.Y(x_y[1]),alt.Color("Name"))
-)
-st.altair_chart(chartInt)
+
 col1,col2,col3=st.columns(3)
 chart2=(
     alt.Chart(data)
@@ -140,7 +138,7 @@ with col2:
     st.altair_chart(chart2_1,use_container_width=True)
 
 container=st.container(border=True)
-container.write("from the graphs above what can we conclude about winning the single match and cooperating rarely? does it payoff? does winning the single battle win u the war?or doesn't it? does being a jerk and not cooperating work ?") 
+container.write("from the graphs above what can we conclude about winning the single match and cooperating rarely? does it payoff? does winning the single battle win u the war?or doesn't it? does being nasty work ?") 
 chart3=(
     alt.Chart(data)
     .mark_point()
@@ -150,41 +148,39 @@ with col3:
     st.altair_chart(chart3)
 
 #grafico per mostrare retaliatory ma non so che x usare(c to c ecc) mentre l'altra asse sarà rank
-chart4=(
-    alt.Chart(data)
-    .mark_point()
-    .encode(alt.X("Rank").scale(domain=[0,lim]),alt.Y("CC_to_C_rate"),alt.Color("Name")).properties(title="rank of player per retaliatory")
-)
-st.altair_chart(chart4)
+col1,col2=st.columns(2)
+#sistemo legenda come grafici sopra e aggiungo container con domanda, penso di rimuovere dd perchè non capisco se sia giusta
+with col1:
+    chart4=(
+        alt.Chart(data)
+        .mark_point()
+        .encode(alt.X("Rank").scale(domain=[0,lim]),alt.Y("DD_rate"),alt.Color("Name")).properties(title="Defection if enemy defected")
+    )
+    st.altair_chart(chart4)
 
-st.write("bozza perchè non ho la variabile di intresse score totale al posto di wins")
-chart5=(
-    alt.Chart(data)
-    .mark_bar()
-    .encode(alt.X("scores"),alt.Y("Name",sort="-x"))
-)
-st.altair_chart(chart5)
-
-
-#https://axelrod.readthedocs.io/en/stable/how-to/access_tournament_results.html#tournament-results
-st.subheader("scores")
-st.write(results.scores)#lungo n-1 ma sempre con 9 elementi dentro che non riesco a interpreatre sistemato
-st.subheader("payoff_matrix")
-st.write(results.payoff_matrix)#utilizzabile
-st.subheader("wins")
-st.write(results.wins)#lungo n-1 ma sempre con 9 elementi dentro che non riesco a interpreatre
-st.subheader("normalised scores")    
-st.write(results.normalised_scores)  #lungo n-1 ma sempre con 9 elementi dentro che non riesco a interpreatre                     
-st.subheader("match length")    
-st.write(results.match_lengths) #lungo n-1 e n-1 elementi per elemento
+with col2:
+    chart_DC=(
+        alt.Chart(data)
+        .mark_point()
+        .encode(alt.X("Rank").scale(domain=[0,lim]),alt.Y("DC_rate"),alt.Color("Name")).properties(title="Defection if enemy cooperated")
+    )
+    st.altair_chart(chart_DC)
 
 
+with st.popover("Open popover to create your own graph"):
+    x_y=st.multiselect("choose what x and y axes will represent",data.columns,placeholder="choose 2 : ",max_selections=2)
+    st.write(x_y)
+    chartInt=(
+        alt.Chart(data)
+        .mark_point()
+        .encode(alt.X(x_y[0]),alt.Y(x_y[1]),alt.Color("Name"))
+    )
+    st.altair_chart(chartInt)
 
 
-# d aggiungere colonne oe scores al dataframe?con polars?scores è sempre lungo 9 prchè?
 
-#aggiungere colonne (scores ) e capire cosa significano
-                          
+
+
 l,m,m,m,r= st.columns(5)
 with r:
     st.write("𝓑𝓲𝓪𝓼𝓮𝓽𝓽𝓸 𝓛𝓾𝓬𝓪 ,  𝓪.𝓪.𝟐𝟎𝟐𝟒/𝟐𝟓, 𝟐𝟎𝟔𝟕𝟏𝟖𝟔")

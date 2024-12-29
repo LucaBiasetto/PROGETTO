@@ -11,11 +11,13 @@ st.write("https://axelrod.readthedocs.io/en/stable/")
 
 st.subheader("video di ispirazione")
 st.video("https://www.youtube.com/watch?v=mScpHTIi-kM&list=WL&index=2&t=1416s/?embed=true")
-#st.components.v1.iframe
 
 
-#st.html("<p><span style='text-decoration: line-through double red;'>Oops</span>!</p>")
-#st.html("<iframe width="560" height="315" src="https://www.youtube.com/embed/mScpHTIi-kM?si=JSvc0Jbs-qtJUWKA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>")
+#https://github.com/Axelrod-Python/Axelrod/blob/dev/axelrod/strategies/axelrod_first.py  wikidoc
+#https://axelrod.readthedocs.io/en/stable/how-to/access_tournament_results.html#tournament-results help func
+
+
+
 l,m,m,m,r= st.columns(5)
 with r:
     st.write("𝓑𝓲𝓪𝓼𝓮𝓽𝓽𝓸 𝓛𝓾𝓬𝓪 ,  𝓪.𝓪.𝟐𝟎𝟐𝟒/𝟐𝟓, 𝟐𝟎𝟔𝟕𝟏𝟖𝟔")
