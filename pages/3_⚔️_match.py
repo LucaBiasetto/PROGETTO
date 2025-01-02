@@ -1,7 +1,6 @@
 import polars as pl
 import streamlit as st
 import axelrod as axl
-from icecream import ic
 import csv
 import pygame
 from io import BytesIO
@@ -100,198 +99,202 @@ with col22 :
     st.image(r"C:\\Users\\Luca Biasetto\\OneDrive\Desktop\3zo anno\Sistemi 2\\progetto\\pygame_graphics\\nikita1.png",caption="NIkita, prisoner 2",use_container_width=True)
 
 match=axl.Match(players=players2,turns=turns,noise=noise,seed=235)
-
-results2=match.play()
-
-
-st.subheader("results")
-st.write(results2)
-#st.write(type(results2))
-
-anniD=0
-anniN=0
-for el in results2:
-    if repr(el[0])=="C" and repr(el[1])=="C":
-        anniD=anniD+1
-        anniN=anniN+1
-    elif(repr(el[0])=="D" and repr(el[1])=="D"):
-        anniD+=3
-        anniN+=3
-    elif(repr(el[0])=="C" and repr(el[1])=="D"):
-        anniD+=5
-        anniN+=0
-    elif(repr(el[0])=="D" and repr(el[1])=="C"):
-        anniD+=0
-        anniN+=5
-st.write("gli anni di galera sono:",anniD,anniN)
+try:
+    results2=match.play()
 
 
-st.title("Prisoners Clash")
-st.write("Premi il pulsante per avanzare di un turno")
+    #st.subheader("results")
+    #st.write(results2)
+    #st.write(type(results2))
 
-# Inizializza Pygame
-pygame.init()
+    anniD=0
+    anniN=0
+    for el in results2:
+        if repr(el[0])=="C" and repr(el[1])=="C":
+            anniD=anniD+1
+            anniN=anniN+1
+        elif(repr(el[0])=="D" and repr(el[1])=="D"):
+            anniD+=3
+            anniN+=3
+        elif(repr(el[0])=="C" and repr(el[1])=="D"):
+            anniD+=5
+            anniN+=0
+        elif(repr(el[0])=="D" and repr(el[1])=="C"):
+            anniD+=0
+            anniN+=5
 
-# Dimensioni dello schermo
 
-screen_width, screen_height = 800, 600
-screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("Prisoners Clash")
 
-p1= pygame.image.load('pygame_graphics\\dwight1.png').convert_alpha() 
-p1=pygame.transform.smoothscale(p1,(370,420))
-p2= pygame.image.load('pygame_graphics\\nikita1.png').convert_alpha() 
-p2=pygame.transform.smoothscale(p2,(370,420))#ridimensiono immagine
-g1=pygame.image.load('pygame_graphics\\guard1.png').convert_alpha()
-g1=pygame.transform.smoothscale(g1,(250,420))#ridimensiono immagine
-game_bg = pygame.image.load('pygame_graphics\\tribunale.png').convert_alpha()  # Immagine per il gioco
-game_over_bg = pygame.image.load("pygame_graphics\\game_end1.png").convert_alpha()  # Immagine per il Game Over
 
-# Ridimensiona gli sfondi per adattarli allo schermo
-game_bg = pygame.transform.scale(game_bg, (screen_width, screen_height))
-game_over_bg = pygame.transform.scale(game_over_bg, (screen_width, screen_height))#al momento inutili 
 
-# Colori
-white = (255, 255, 255)
-black = (0, 0, 0)
+    st.title("Prisoners Clash")
+    st.write("Premi il pulsante per avanzare di un turno")
 
-# Font
-font = pygame.font.Font(None, 50)
-font1 = pygame.font.Font(None, 40)
-font2 = pygame.font.Font(None, 40)#inutili
-annitot1=st.session_state.get("annitot1", 0)
-annitot2=st.session_state.get("annitot2", 0)
-# Stato del gioco
+    # Inizializza Pygame
+    pygame.init()
 
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+    # Dimensioni dello schermo
 
-    tick_count = st.session_state.get("tick_count", 0)  # Mantieni il conteggio dei tick tra i reloads
-    game_state = "running"  # Possibili stati: "running", "game_over"
+    screen_width, screen_height = 800, 600
+    screen = pygame.display.set_mode((screen_width, screen_height))
+    pygame.display.set_caption("Prisoners Clash")
 
-    if game_state == "running":
+    p1= pygame.image.load('pygame_graphics\\dwight1.png').convert_alpha() 
+    p1=pygame.transform.smoothscale(p1,(370,420))
+    p2= pygame.image.load('pygame_graphics\\nikita1.png').convert_alpha() 
+    p2=pygame.transform.smoothscale(p2,(370,420))#ridimensiono immagine
+    g1=pygame.image.load('pygame_graphics\\guard1.png').convert_alpha()
+    g1=pygame.transform.smoothscale(g1,(250,420))#ridimensiono immagine
+    game_bg = pygame.image.load('pygame_graphics\\tribunale.png').convert_alpha()  # Immagine per il gioco
+    game_over_bg = pygame.image.load("pygame_graphics\\game_end1.png").convert_alpha()  # Immagine per il Game Over
 
-        # Controllo del tick
-        if tick_count==-1:
-            st.session_state["annitot1"]=0
-            st.session_state["annitot2"]=0
-        a,b,c=st.columns(3)
+    # Ridimensiona gli sfondi per adattarli allo schermo
+    game_bg = pygame.transform.scale(game_bg, (screen_width, screen_height))
+    game_over_bg = pygame.transform.scale(game_over_bg, (screen_width, screen_height))#al momento inutili 
+
+    # Colori
+    white = (255, 255, 255)
+    black = (0, 0, 0)
+
+    # Font
+    font = pygame.font.Font(None, 50)
+    font1 = pygame.font.Font(None, 40)
+    font2 = pygame.font.Font(None, 40)#inutili
+    annitot1=st.session_state.get("annitot1", 0)
+    annitot2=st.session_state.get("annitot2", 0)
+    # Stato del gioco
+
+
+
+
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        tick_count = st.session_state.get("tick_count", 0)  # Mantieni il conteggio dei tick tra i reloads
+        game_state = "running"  # Possibili stati: "running", "game_over"
+
+        if game_state == "running":
+
+            # Controllo del tick
+            if tick_count==-1:
+                st.session_state["annitot1"]=0
+                st.session_state["annitot2"]=0
         
-        with a:
-            if st.button("Go to the recap"):
-                game_state="recap"
-                screen.blit(game_over_bg, (0, 0))
-                #capisco come fare in modo che se esegue questo salta la parte sotto di game, ma questo appare anche alla fine dei turni
+            a,b,c=st.columns(3)
             
-        with b:
-            if st.button("Go to next turn") :
-                tick_count += 1
-                st.session_state["tick_count"] = tick_count  # Salva lo stato del tick
+            with a:
+                if st.button("Go to the recap"):
+                    game_state="recap"
+                    screen.blit(game_over_bg, (0, 0))
+                    #capisco come fare in modo che se esegue questo salta la parte sotto di game, ma questo appare anche alla fine dei turni
+                
+            with b:
+                if st.button("Go to next turn") :
+                    tick_count += 1
+                    st.session_state["tick_count"] = tick_count  # Salva lo stato del tick            
                 
             
+
+            # Disegna il frame di Pygame
+
+
+            screen.blit(game_bg, (0, 0))
+
+            annid=0
+            annin=0
+            
+            if tick_count==turns-1 : 
+                st.session_state["tick_count"] = -1
+            
+            if repr(results2[tick_count][0])=="C" and repr(results2[tick_count][1])=="C":
+                annid=annid+1
+                annin=annin+1
+            elif repr(results2[tick_count][0])=="D" and repr(results2[tick_count][1])=="D":
+                annid+=3
+                annin+=3
+            elif repr(results2[tick_count][0])=="C" and repr(results2[tick_count][1])=="D":
+                annid+=5
+                annin+=0
+            elif repr(results2[tick_count][0])=="D" and repr(results2[tick_count][1])=="C":
+                annid+=0
+                annin+=5
+
+            st.session_state["annitot1"]=annitot1+annid
+            st.session_state["annitot2"]=annitot2+annin
+
+            text = font.render(f"Turn {tick_count+1}", True, black)
+            text_rect = text.get_rect(center=(70,50))
+            screen.blit(text, text_rect)
+
+            text0 = font.render(f"Judgment {annitot1,annitot2}", True, black)
+            text0_rect = text.get_rect(center=(340,30))
+            screen.blit(text0, text0_rect)
+
+            text1 = font1.render(f"+ {annid}", True, black)
+            text_rect1 = text1.get_rect(center=(180,220))
+            screen.blit(text1, text_rect1)
+
+            text2 = font2.render(f"+ {annin}", True, black)
+            text_rect2 = text2.get_rect(center=(600,220))
+            screen.blit(text2, text_rect2)
+
+            #p1 e p2
+            p1_rect=p1.get_rect(center=(180,430))
+            screen.blit(p1,p1_rect)
+
+            p2_rect=p2.get_rect(center=(600,420))
+            screen.blit(p2,p2_rect)
+            
         
+        if game_state == "recap":
+            
+            screen.blit(game_over_bg, (0, 0))
+            
 
-        # Disegna il frame di Pygame
+            text1 = font1.render(f"{anniD}", True, black)
+            text_rect1 = text1.get_rect(center=(200,60))
+            screen.blit(text1, text_rect1)
 
+            text2 = font2.render(f"{anniN}", True, black)
+            text_rect2 = text2.get_rect(center=(620,60))
+            screen.blit(text2, text_rect2)
 
-        screen.blit(game_bg, (0, 0))
+            #p1 e p2 e g1
+            p1_rect=p1.get_rect(center=(220,430))
+            screen.blit(p1,p1_rect)
 
-        annid=0
-        annin=0
-        
-        if tick_count==turns-1 : 
-            st.session_state["tick_count"] = -1
-        
-        if repr(results2[tick_count][0])=="C" and repr(results2[tick_count][1])=="C":
-            annid=annid+1
-            annin=annin+1
-        elif repr(results2[tick_count][0])=="D" and repr(results2[tick_count][1])=="D":
-            annid+=3
-            annin+=3
-        elif repr(results2[tick_count][0])=="C" and repr(results2[tick_count][1])=="D":
-            annid+=5
-            annin+=0
-        elif repr(results2[tick_count][0])=="D" and repr(results2[tick_count][1])=="C":
-            annid+=0
-            annin+=5
+            p2_rect=p2.get_rect(center=(600,420))
+            screen.blit(p2,p2_rect)
 
-        st.session_state["annitot1"]=annitot1+annid
-        st.session_state["annitot2"]=annitot2+annin
-
-        text = font.render(f"Turn {tick_count+1}", True, black)
-        text_rect = text.get_rect(center=(70,50))
-        screen.blit(text, text_rect)
-
-        text0 = font.render(f"Judgment {annitot1,annitot2}", True, black)
-        text0_rect = text.get_rect(center=(340,30))
-        screen.blit(text0, text0_rect)
-
-        text1 = font1.render(f"+ {annid}", True, black)
-        text_rect1 = text1.get_rect(center=(180,220))
-        screen.blit(text1, text_rect1)
-
-        text2 = font2.render(f"+ {annin}", True, black)
-        text_rect2 = text2.get_rect(center=(600,220))
-        screen.blit(text2, text_rect2)
-
-        #p1 e p2
-        p1_rect=p1.get_rect(center=(180,430))
-        screen.blit(p1,p1_rect)
-
-        p2_rect=p2.get_rect(center=(600,420))
-        screen.blit(p2,p2_rect)
-        
-    
-    if game_state == "recap":
-         
-          screen.blit(game_over_bg, (0, 0))
-         
-
-          text1 = font1.render(f"{anniD}", True, black)
-          text_rect1 = text1.get_rect(center=(200,60))
-          screen.blit(text1, text_rect1)
-
-          text2 = font2.render(f"{anniN}", True, black)
-          text_rect2 = text2.get_rect(center=(620,60))
-          screen.blit(text2, text_rect2)
-
-        #p1 e p2 e g1
-          p1_rect=p1.get_rect(center=(220,430))
-          screen.blit(p1,p1_rect)
-
-          p2_rect=p2.get_rect(center=(600,420))
-          screen.blit(p2,p2_rect)
-
-          g1_rect=g1.get_rect(center=(400,420))
-          screen.blit(g1,g1_rect)
+            g1_rect=g1.get_rect(center=(400,420))
+            screen.blit(g1,g1_rect)
 
 
 
-        
+            
 
-    # Converti la superficie Pygame in un'immagine visualizzabile in Streamlit
-    #provo a aggiungere un if game_state==running così si aggiorna solo se è effettivamente dinamica
-    buffer = BytesIO()
-    pygame_image = pygame.image.tostring(screen, "RGBA")
-    image = Image.frombytes("RGBA", (screen_width, screen_height), pygame_image)
-    image.save(buffer, format="PNG")
-    st.image(buffer.getvalue(), caption="Schermata Pygame")
+        # Converto la superficie Pygame in un'immagine visualizzabile in Streamlit
+        #provo a aggiungere un if game_state==running così si aggiorna solo se è effettivamente dinamica
+        buffer = BytesIO()
+        pygame_image = pygame.image.tostring(screen, "RGBA")
+        image = Image.frombytes("RGBA", (screen_width, screen_height), pygame_image)
+        image.save(buffer, format="PNG")
+        st.image(buffer.getvalue(), caption="Schermata Pygame")
 
-# Esci da Pygame (opzionale, non necessario durante l'esecuzione continua)
-pygame.quit()
+    # Esci da Pygame (opzionale, non necessario durante l'esecuzione continua)
+    pygame.quit()
 
 
-#sistemo e ignoro errore mostrato
-
-if repr(tick_count) == 5:
-    st.write("funziona")  
+    #sistemo e ignoro errore mostrato
 
 
 
-
-l,m,m,m,r= st.columns(5)
-with r:
-    st.write("𝓑𝓲𝓪𝓼𝓮𝓽𝓽𝓸 𝓛𝓾𝓬𝓪 ,  𝓪.𝓪.𝟐𝟎𝟐𝟒/𝟐𝟓, 𝟐𝟎𝟔𝟕𝟏𝟖𝟔")
+    l,m,m,m,r= st.columns(5)
+    with r:
+        st.write("𝓑𝓲𝓪𝓼𝓮𝓽𝓽𝓸 𝓛𝓾𝓬𝓪 ,  𝓪.𝓪.𝟐𝟎𝟐𝟒/𝟐𝟓, 𝟐𝟎𝟔𝟕𝟏𝟖𝟔")
+except IndexError :
+    st.write("please filter on the left ")

@@ -1,9 +1,7 @@
 import polars as pl
 import streamlit as st
 import axelrod as axl
-from icecream import ic
 import csv
-import pandas as pd
 import altair as alt
 #in the console type uv run -n streamlit run _filename_
 
@@ -24,7 +22,7 @@ turns=st.sidebar.slider("select number of turns: ", min_value=0,max_value=1000)
 
 
 #------------------Torneo--------------------------------
-pla=st.radio("wiki",(axl.axelrod_first_strategies),format_func=lambda x: str(x).strip("<'>").split('.')[-1])
+pla=st.radio("WIKI",(axl.axelrod_first_strategies),format_func=lambda x: str(x).strip("<'>").split('.')[-1])
 
 
 cont=st.container(border=True)
@@ -74,109 +72,94 @@ if repr(pla).strip("<'>").split('.')[-1]=="TitForTat":
 if repr(pla).strip("<'>").split('.')[-1]=="Grudger":
     cont.write("Start by cooperating and if at any point the opponent defects  grudger will defect fot all the game") 
 
+try:
+    tournament=axl.Tournament(players=players,noise=noise,prob_end=prob_end,turns=turns,repetitions=1)
+    results=tournament.play()
+    summary = results.summarise()
+    st.title('Risultati torneo')
+    #st.write(summary)
 
-tournament=axl.Tournament(players=players,noise=noise,prob_end=prob_end,turns=turns,repetitions=1)
-results=tournament.play()
-summary = results.summarise()
-st.title('Risultati torneo')
-#st.write(summary)
-
-#axelrod library graphs
-plot = axl.Plot(results)
-p = plot.boxplot()
-p2 = plot.winplot()
-p3 = plot.payoff()
-st.subheader("Boxplot")
-st.write(p)
-st.subheader("Winplot")
-st.write(p2)
-st.subheader("Payoffplot(payoff per turn)")
-st.write(p3)
-
-
+    #axelrod library graphs
+    plot = axl.Plot(results)
+    p = plot.boxplot()
+    p2 = plot.winplot()
+    p3 = plot.payoff()
+    st.subheader("Boxplot")
+    st.write(p)
+    st.subheader("Winplot")
+    st.write(p2)
+    st.subheader("Payoffplot(payoff per turn)")
+    st.write(p3)
 
 
-results.write_summary('summary.csv')
 
-lim=len(players)+1
-actual_scores = [l[0] for l in results.scores]
-#st.write(actual_scores)
-actual_scores=sorted(actual_scores,reverse=True)
-data=pl.read_csv("summary.csv").with_columns((pl.col("Rank") +int(1)).alias("Rank"),score=pl.Series(actual_scores)).select(["Rank","Name","score","Wins","Median_score","Cooperation_rating","Initial_C_rate","CC_rate","CD_rate","DC_rate","DD_rate","CC_to_C_rate","CD_to_C_rate","DC_to_C_rate","DD_to_C_rate"])
 
-st.dataframe(data)
+    results.write_summary('summary.csv')
 
-chart5=(
-    alt.Chart(data)
-    .mark_bar()
-    .encode(alt.X("score"),alt.Y("Name",sort="-x"))
-    .properties(title="Tournament rankings")
-)
-st.altair_chart(chart5)
+    lim=len(players)+1
+    actual_scores = [l[0] for l in results.scores]
+    #st.write(actual_scores)
+    actual_scores=sorted(actual_scores,reverse=True)
+    data=pl.read_csv("summary.csv").with_columns((pl.col("Rank") +int(1)).alias("Rank"),score=pl.Series(actual_scores)).select(["Rank","Name","score","Wins","Median_score","Cooperation_rating","Initial_C_rate","CC_rate","CD_rate","DC_rate","DD_rate","CC_to_C_rate","CD_to_C_rate","DC_to_C_rate","DD_to_C_rate"])
 
-chart=(
-    alt.Chart(data)
-    .mark_circle()
-    .encode(alt.X("Wins"),alt.Y("Median_score"),alt.Color("Name"))
-)
-st.altair_chart(chart)
+    st.dataframe(data)
 
-col1,col2,col3=st.columns(3)
-chart2=(
-    alt.Chart(data)
-    .mark_point()
-    .encode(alt.X("Wins").scale(domain=[0,lim]),alt.Y("Cooperation_rating"),alt.Color("Name",legend=None)).properties(title="cooperation rate per wins")
-)
-with col1:
-    st.altair_chart(chart2,use_container_width=True)
+    chart5=(
+        alt.Chart(data)
+        .mark_bar()
+        .encode(alt.X("score"),alt.Y("Name",sort="-x"))
+        .properties(title="Tournament rankings")
+    )
+    st.altair_chart(chart5)
 
-chart2_1=(
-    alt.Chart(data)
-    .mark_point()
-    .encode(alt.X("Rank").scale(domain=[0,lim]),alt.Y("Cooperation_rating"),alt.Color("Name",legend=None)).properties(title="cooperation rate per rank"))
-with col2:
-    st.altair_chart(chart2_1,use_container_width=True)
+    chart=(
+        alt.Chart(data)
+        .mark_circle()
+        .encode(alt.X("Wins"),alt.Y("Median_score"),alt.Color("Name"))
+    )
+    st.altair_chart(chart)
 
-container=st.container(border=True)
-container.write("from the graphs above what can we conclude about winning the single match and cooperating rarely? does it payoff? does winning the single battle win u the war?or doesn't it? does being nasty work ?") 
-chart3=(
-    alt.Chart(data)
-    .mark_point()
-    .encode(alt.X("Rank").scale(domain=[0,lim]),alt.Y("Wins").scale(domain=[0,lim]),alt.Color("Name")).properties(title="rank of player per wins")
-)
-with col3:
-    st.altair_chart(chart3)
-
-#grafico per mostrare retaliatory ma non so che x usare(c to c ecc) mentre l'altra asse sarà rank
-col1,col2=st.columns(2)
-#sistemo legenda come grafici sopra e aggiungo container con domanda, penso di rimuovere dd perchè non capisco se sia giusta
-with col1:
-    chart4=(
+    col1,col2,col3=st.columns(3)
+    chart2=(
         alt.Chart(data)
         .mark_point()
-        .encode(alt.X("Rank").scale(domain=[0,lim]),alt.Y("DD_rate"),alt.Color("Name")).properties(title="Defection if enemy defected")
+        .encode(alt.X("Wins").scale(domain=[0,lim]),alt.Y("Cooperation_rating"),alt.Color("Name",legend=None)).properties(title="cooperation rate per wins")
     )
-    st.altair_chart(chart4)
+    with col1:
+        st.altair_chart(chart2,use_container_width=True)
 
-with col2:
-    chart_DC=(
+    chart2_1=(
         alt.Chart(data)
         .mark_point()
-        .encode(alt.X("Rank").scale(domain=[0,lim]),alt.Y("DC_rate"),alt.Color("Name")).properties(title="Defection if enemy cooperated")
-    )
-    st.altair_chart(chart_DC)
+        .encode(alt.X("Rank").scale(domain=[0,lim]),alt.Y("Cooperation_rating"),alt.Color("Name",legend=None)).properties(title="cooperation rate per rank"))
+    with col2:
+        st.altair_chart(chart2_1,use_container_width=True)
 
-
-with st.popover("Open popover to create your own graph"):
-    x_y=st.multiselect("choose what x and y axes will represent",data.columns,placeholder="choose 2 : ",max_selections=2)
-    st.write(x_y)
-    chartInt=(
+    container=st.container(border=True)
+    container.write("from the graphs above what can we conclude about winning the single match and cooperating rarely? does it payoff? does winning the single battle win u the war?or doesn't it? does being nasty work ?") 
+    chart3=(
         alt.Chart(data)
         .mark_point()
-        .encode(alt.X(x_y[0]),alt.Y(x_y[1]),alt.Color("Name"))
+        .encode(alt.X("Rank").scale(domain=[0,lim]),alt.Y("Wins").scale(domain=[0,lim]),alt.Color("Name")).properties(title="rank of player per wins")
     )
-    st.altair_chart(chartInt)
+    with col3:
+        st.altair_chart(chart3)
 
+
+    try:
+        with st.popover("Open popover to create your own graph"):
+            x_y=st.multiselect("choose what x and y axes will represent",data.columns,placeholder="choose 2 : ",max_selections=2)
+            st.write(x_y)
+            chartInt=(
+                alt.Chart(data)
+                .mark_point()
+                .encode(alt.X(x_y[0]),alt.Y(x_y[1]),alt.Color("Name"))
+            )
+            st.altair_chart(chartInt)
+    except IndexError:
+        st.write("create a graph by yourself")
+except NotImplementedError:
+    st.write("please filter on the left")
 
 
 
