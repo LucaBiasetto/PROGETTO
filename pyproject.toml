@@ -1,0 +1,12 @@
+[project]
+name = "progetto"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "axelrod>=4.13.1",
+    "io",
+    "polars>=1.18.0",
+    "pygame>=2.6.1",
+]

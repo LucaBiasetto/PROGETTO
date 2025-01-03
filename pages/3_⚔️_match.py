@@ -7,6 +7,7 @@ from io import BytesIO
 from PIL import Image
 
 
+
 st.set_page_config(page_title="Match",page_icon="⚔️")
 st.sidebar.success("select a page above")
 
@@ -99,6 +100,8 @@ with col22 :
     st.image(r"C:\\Users\\Luca Biasetto\\OneDrive\Desktop\3zo anno\Sistemi 2\\progetto\\pygame_graphics\\nikita1.png",caption="NIkita, prisoner 2",use_container_width=True)
 
 match=axl.Match(players=players2,turns=turns,noise=noise,seed=235)
+con_error=st.container(border=True)
+con_error.write("I know about the error _StreamlitDuplicateElementKey_  but i couldn't figure out how to fix it properly, because when successfully ignoring the error or creating dynamic unique keys infinite pygame screen pop off, so as far as i know and understand for my app non unique keys are needed. \n\n Maybe a better programmer can solve it but as far as my understandings go, that's the point where i will settle on. \n\n Sorry for the error.   ")
 try:
     results2=match.play()
 
@@ -169,6 +172,7 @@ try:
 
 
     running = True
+    a,b,c=st.columns(3)
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -184,19 +188,21 @@ try:
                 st.session_state["annitot1"]=0
                 st.session_state["annitot2"]=0
         
-            a,b,c=st.columns(3)
+            
+            
             
             with a:
                 if st.button("Go to the recap"):
                     game_state="recap"
                     screen.blit(game_over_bg, (0, 0))
-                    #capisco come fare in modo che se esegue questo salta la parte sotto di game, ma questo appare anche alla fine dei turni
-                
+                        
+                    
             with b:
                 if st.button("Go to next turn") :
                     tick_count += 1
-                    st.session_state["tick_count"] = tick_count  # Salva lo stato del tick            
-                
+                    st.session_state["tick_count"] = tick_count  # Salva lo stato del tick
+                    
+            #posso ignorare errore con try: except Exception as e: ma genera infiniti schermi di pygame
             
 
             # Disegna il frame di Pygame
@@ -289,7 +295,7 @@ try:
     pygame.quit()
 
 
-    #sistemo e ignoro errore mostrato
+   
 
 
 

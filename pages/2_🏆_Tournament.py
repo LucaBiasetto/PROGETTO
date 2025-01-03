@@ -4,7 +4,7 @@ import axelrod as axl
 import csv
 import altair as alt
 #in the console type uv run -n streamlit run _filename_
-
+# uv add di streamlit,csv,io,PIL, streamlit_player e altair non va
 
 st.set_page_config(page_title="Tournament",page_icon="🏆")
 st.sidebar.success("select a page above")
@@ -76,7 +76,7 @@ try:
     tournament=axl.Tournament(players=players,noise=noise,prob_end=prob_end,turns=turns,repetitions=1)
     results=tournament.play()
     summary = results.summarise()
-    st.title('Risultati torneo')
+    st.title('Tournament results')
     #st.write(summary)
 
     #axelrod library graphs
