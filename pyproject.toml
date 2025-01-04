@@ -5,8 +5,10 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "altair>=5.5.0",
     "axelrod>=4.13.1",
-    "io",
+    "pillow>=11.1.0",
     "polars>=1.18.0",
     "pygame>=2.6.1",
+    "streamlit>=1.40.0",
 ]
