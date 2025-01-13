@@ -5,7 +5,7 @@ st.set_page_config(page_title="Documentation",page_icon="📚")
 st.sidebar.success("select a page above")
 
 st.title("📚DOCUMENTATION📚 ")
-
+#in the console type uv run -n streamlit run _filename_
 
 
 st.title("Game theory introduction")

@@ -3,8 +3,8 @@ import streamlit as st
 import axelrod as axl
 import csv
 import altair as alt
-#in the console type uv run -n streamlit run _filename_
-# uv add ,csv,io,PIL, streamlit_player  non va, provo usando -n e aggiungendo pilllow e non PIL
+
+# uv add  usando -n e aggiungendo pilllow e non PIL
 
 st.set_page_config(page_title="Tournament",page_icon="🏆")
 st.sidebar.success("select a page above")

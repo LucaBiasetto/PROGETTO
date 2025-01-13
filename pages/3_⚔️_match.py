@@ -89,6 +89,8 @@ st.title("PRISONERS CLASH")
 container = st.container(border=True)
 
 
+
+
 container.write("I am presenting u here 2 prisoners Dwight and Nikita, who committed many crimes togheter in their career, but now that they got busted it's prisoner-1(Dwight) word against prisoner-2(Nikita)'s. They have 2 choices to snitch or to admit, if they both admit they both get 1 year of judgment, if they both snitch they get 3 year of judgment each, if one snithes and the other doesn't the one who snitched gets 0 years and the other gets 5.    ")
 
 col11,col22=st.columns(2)
@@ -106,9 +108,7 @@ try:
     results2=match.play()
 
 
-    #st.subheader("results")
-    #st.write(results2)
-    #st.write(type(results2))
+
 
     anniD=0
     anniN=0
@@ -133,13 +133,16 @@ try:
     st.title("Prisoners Clash")
     st.write("Premi il pulsante per avanzare di un turno")
 
+    
+
     # Inizializza Pygame
     pygame.init()
-
+        
     # Dimensioni dello schermo
-
     screen_width, screen_height = 800, 600
+    
     screen = pygame.display.set_mode((screen_width, screen_height))
+    
     pygame.display.set_caption("Prisoners Clash")
 
     p1= pygame.image.load('pygame_graphics\\dwight1.png').convert_alpha() 
@@ -166,13 +169,10 @@ try:
     annitot1=st.session_state.get("annitot1", 0)
     annitot2=st.session_state.get("annitot2", 0)
     # Stato del gioco
-
-
-
-
-
     running = True
     a,b,c=st.columns(3)
+    
+    
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -198,7 +198,7 @@ try:
                         
                     
             with b:
-                if st.button("Go to next turn") :
+                if st.button("Go to next turn"):
                     tick_count += 1
                     st.session_state["tick_count"] = tick_count  # Salva lo stato del tick
                     
