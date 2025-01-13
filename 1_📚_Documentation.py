@@ -15,7 +15,7 @@ con1.write("On the 3rd of september 1949 an american weather monitoring plane co
 
 left_co, cent_co,last_co = st.columns(3)
 with cent_co:
-    st.image("C:\\Users\Luca Biasetto\\OneDrive\Desktop\\3zo anno\Sistemi 2\progetto\\neumann.png",caption="Famous von Neumann phrase ")
+    st.image("neumann.png",caption="Famous von Neumann phrase ")
 
 con2 = st.container(border=True)
 

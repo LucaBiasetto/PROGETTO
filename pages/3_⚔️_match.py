@@ -96,10 +96,10 @@ container.write("I am presenting u here 2 prisoners Dwight and Nikita, who commi
 col11,col22=st.columns(2)
 #img=Image.open(r"C:\Users\Luca Biasetto\OneDrive\Desktop\3zo anno\Sistemi 2\progetto\pygame_graphics\dwight.png")#pathlib.Path()
 with col11 :
-    st.image(r"C:\\Users\\Luca Biasetto\\OneDrive\Desktop\3zo anno\Sistemi 2\\progetto\\pygame_graphics\\dwight1.png",caption="Dwight, Prisoner 1",use_container_width=True)
+    st.image(r"pygame_graphics\\dwight1.png",caption="Dwight, Prisoner 1",use_container_width=True)
 
 with col22 :
-    st.image(r"C:\\Users\\Luca Biasetto\\OneDrive\Desktop\3zo anno\Sistemi 2\\progetto\\pygame_graphics\\nikita1.png",caption="NIkita, prisoner 2",use_container_width=True)
+    st.image(r"pygame_graphics\\nikita1.png",caption="NIkita, prisoner 2",use_container_width=True)
 
 match=axl.Match(players=players2,turns=turns,noise=noise,seed=235)
 con_error=st.container(border=True)
