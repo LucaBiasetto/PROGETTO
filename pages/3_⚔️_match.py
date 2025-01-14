@@ -10,6 +10,9 @@ from PIL import Image
 
 st.set_page_config(page_title="Match",page_icon="⚔️")
 st.sidebar.success("select a page above")
+st.sidebar.image("logo.png",use_container_width=True)
+
+
 
 st.title("⚔️MATCH⚔️ ")
 with st.popover("Open popover"):
@@ -21,10 +24,9 @@ st.write("Ready to create a head to head match ", name,"?")
 st.sidebar.header("Please filter here: ")
 
 
-players2=st.sidebar.multiselect("choose what strategies will prisoner number 1 and priusoner number 2 will respectively perform",axl.axelrod_first_strategies,placeholder="choose 2 : ",max_selections=2,format_func=lambda x: str(x).strip("<'>").split('.')[-1])#trovare lista di strategie che mi interessa
+players2=st.sidebar.multiselect("choose what strategies will prisoner number 1 and priusoner number 2 will respectively perform",axl.axelrod_first_strategies,placeholder="choose 2 : ",max_selections=2,format_func=lambda x: str(x).strip("<'>").split('.')[-1])
 players2=[d()for d in players2]
 noise=st.sidebar.slider("choose the noise of the environment(likelihood of every choice to be changed by randomness) : ", min_value=0.0,max_value=1.0)
-#prob_end=st.sidebar.slider("choose the likelihood of the match ending every turn : ", min_value=0.0,max_value=1.0)
 turns=st.sidebar.slider("choose how many crimes did they commit(number of turns): ", min_value=0,max_value=1000)
 
 
@@ -94,12 +96,12 @@ container = st.container(border=True)
 container.write("I am presenting u here 2 prisoners Dwight and Nikita, who committed many crimes togheter in their career, but now that they got busted it's prisoner-1(Dwight) word against prisoner-2(Nikita)'s. They have 2 choices to snitch or to admit, if they both admit they both get 1 year of judgment, if they both snitch they get 3 year of judgment each, if one snithes and the other doesn't the one who snitched gets 0 years and the other gets 5.    ")
 
 col11,col22=st.columns(2)
-#img=Image.open(r"C:\Users\Luca Biasetto\OneDrive\Desktop\3zo anno\Sistemi 2\progetto\pygame_graphics\dwight.png")#pathlib.Path()
+#pathlib.Path()
 with col11 :
-    st.image(r"pygame_graphics\\dwight1.png",caption="Dwight, Prisoner 1",use_container_width=True)
+    st.image(r"dwight1.png",caption="Dwight, Prisoner 1",use_container_width=True)
 
 with col22 :
-    st.image(r"pygame_graphics\\nikita1.png",caption="NIkita, prisoner 2",use_container_width=True)
+    st.image(r"nikita1.png",caption="NIkita, prisoner 2",use_container_width=True)
 
 match=axl.Match(players=players2,turns=turns,noise=noise,seed=235)
 con_error=st.container(border=True)
@@ -144,20 +146,19 @@ try:
     screen = pygame.display.set_mode((screen_width, screen_height))
     
     pygame.display.set_caption("Prisoners Clash")
-
-    p1= pygame.image.load('pygame_graphics\\dwight1.png').convert_alpha() 
+    #caricamento immagini
+    p1= pygame.image.load('dwight1.png').convert_alpha() 
     p1=pygame.transform.smoothscale(p1,(370,420))
-    p2= pygame.image.load('pygame_graphics\\nikita1.png').convert_alpha() 
+    p2= pygame.image.load('nikita1.png').convert_alpha() 
     p2=pygame.transform.smoothscale(p2,(370,420))#ridimensiono immagine
-    g1=pygame.image.load('pygame_graphics\\guard1.png').convert_alpha()
+    g1=pygame.image.load('guard1.png').convert_alpha()
     g1=pygame.transform.smoothscale(g1,(250,420))#ridimensiono immagine
-    game_bg = pygame.image.load('pygame_graphics\\tribunale.png').convert_alpha()  # Immagine per il gioco
-    game_over_bg = pygame.image.load("pygame_graphics\\game_end1.png").convert_alpha()  # Immagine per il Game Over
+    game_bg = pygame.image.load('tribunale.png').convert_alpha()  # Immagine per il gioco
+    game_over_bg = pygame.image.load("game_end1.png").convert_alpha()  # Immagine per il Game Over
 
     # Ridimensiona gli sfondi per adattarli allo schermo
     game_bg = pygame.transform.scale(game_bg, (screen_width, screen_height))
-    game_over_bg = pygame.transform.scale(game_over_bg, (screen_width, screen_height))#al momento inutili 
-
+    game_over_bg = pygame.transform.scale(game_over_bg, (screen_width, screen_height))
     # Colori
     white = (255, 255, 255)
     black = (0, 0, 0)
@@ -284,7 +285,7 @@ try:
             
 
         # Converto la superficie Pygame in un'immagine visualizzabile in Streamlit
-        #provo a aggiungere un if game_state==running così si aggiorna solo se è effettivamente dinamica
+        
         buffer = BytesIO()
         pygame_image = pygame.image.tostring(screen, "RGBA")
         image = Image.frombytes("RGBA", (screen_width, screen_height), pygame_image)

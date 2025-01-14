@@ -8,6 +8,7 @@ import altair as alt
 
 st.set_page_config(page_title="Tournament",page_icon="🏆")
 st.sidebar.success("select a page above")
+st.sidebar.image("logo.png",use_container_width=True)
 
 #inizializzazione parametri
 st.sidebar.header("Please filter here: ")
@@ -77,7 +78,7 @@ try:
     results=tournament.play()
     summary = results.summarise()
     st.title('Tournament results')
-    #st.write(summary)
+    
 
     #axelrod library graphs
     plot = axl.Plot(results)
@@ -88,7 +89,7 @@ try:
     st.write(p)
     st.subheader("Winplot")
     st.write(p2)
-    st.subheader("Payoffplot(payoff per turn)")
+    st.subheader("Payoffplot(median payoff per turn in the featured match)")
     st.write(p3)
 
 
@@ -98,7 +99,6 @@ try:
 
     lim=len(players)+1
     actual_scores = [l[0] for l in results.scores]
-    #st.write(actual_scores)
     actual_scores=sorted(actual_scores,reverse=True)
     data=pl.read_csv("summary.csv").with_columns((pl.col("Rank") +int(1)).alias("Rank"),score=pl.Series(actual_scores)).select(["Rank","Name","score","Wins","Median_score","Cooperation_rating","Initial_C_rate","CC_rate","CD_rate","DC_rate","DD_rate","CC_to_C_rate","CD_to_C_rate","DC_to_C_rate","DD_to_C_rate"])
 
